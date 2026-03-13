@@ -7,8 +7,11 @@
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?logo=sqlite&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?logo=JSON%20web%20tokens)
 
-Sistema completo para cálculo de férias de funcionários com explicação detalhada dos valores.
+**Sistema de Gestão de Férias - Plataforma SaaS**
+Sistema completo para cálculo de férias com suporte a multi-tenancy (múltiplas empresas), autenticação JWT, histórico em banco de dados e planos de assinatura.
 
 ## 📸 Preview
 
@@ -20,12 +23,17 @@ Sistema completo para cálculo de férias de funcionários com explicação deta
 
 ## 📋 Funcionalidades
 
+- **Módulo SaaS (Administrativo)**:
+  - Multi-tenancy: Cada empresa tem seus dados isolados.
+  - Autenticação JWT e senhas criptografadas.
+  - Gestão de Planos de Assinatura (Trial, Básico, Premium) com limites mensais.
+  - Controle de Funcionários e Histórico de Cálculos salvo no Banco de Dados.
+- **Cálculo de Férias**:
 - Cálculo proporcional de férias baseado nos dias solicitados
 - Adicional constitucional de 1/3 sobre as férias
 - Cálculo automático de INSS (alíquotas progressivas)
 - Cálculo automático de IRRF (Imposto de Renda)
 - Explicação detalhada de cada valor calculado
-- Interface responsiva com design moderno
 
 ## 🚀 Como Executar
 

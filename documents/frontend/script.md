@@ -1,8 +1,8 @@
-# ⚙️ Documentação do JavaScript Frontend (script.js)
+# ⚙️ Documentação do JavaScript Frontend
 
 ## Visão Geral
 
-O arquivo `script.js` contém toda a lógica de interação do frontend, incluindo captura de eventos, comunicação com o servidor e atualização dinâmica da interface.
+Os scripts frontend gerenciam a interação do usuário e a comunicação com a API do servidor. Com a migração para a arquitetura SaaS, o frontend também é responsável por armazenar e enviar tokens JWT nas requisições protegidas.
 
 ## Estrutura do Código
 
@@ -48,15 +48,17 @@ const diasFerias = document.getElementById('diasFerias').value;
 
 ## Requisição HTTP ao Servidor
 
-### Estrutura da Requisição
+### Comunicação com API (SaaS)
 
 ```javascript
-const response = await fetch('/calcular-ferias', {
+const token = localStorage.getItem('token'); // Recupera o JWT salvo no login
+const response = await fetch('/api/calculations', {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}` // Token de segurança
   },
-  body: JSON.stringify({ salarioBruto, diasFerias: parseInt(diasFerias) })
+  body: JSON.stringify({ funcionarioId, diasSolicitados })
 });
 ```
 

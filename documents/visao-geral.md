@@ -2,11 +2,11 @@
 
 ## Descrição do Projeto
 
-O **Sistema de Gestão de Férias** é uma plataforma web completa que oferece múltiplas funcionalidades para funcionários e empresa, incluindo cálculo de férias, educação financeira, captação de recursos e sugestões de economia.
+O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software as a Service)** multi-tenancy. Ele oferece múltiplas funcionalidades para empresas (RH) e funcionários, gerenciando cálculos de forma segura, com autenticação, limites por plano e histórico em banco de dados.
 
 ## Arquitetura do Sistema
 
-### Modelo Cliente-Servidor
+### Modelo Cliente-Servidor (SaaS RESTful)
 
 ```
 ┌─────────────┐         HTTP          ┌─────────────┐

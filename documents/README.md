@@ -1,4 +1,4 @@
-# 📚 Documentação do Projeto - Sistema de Gestão de Férias
+# 📚 Documentação do Projeto - Sistema de Gestão de Férias (SaaS)
 
 Esta pasta contém toda a documentação técnica do projeto, organizada por categorias.
 
@@ -9,7 +9,7 @@ Esta pasta contém toda a documentação técnica do projeto, organizada por cat
 
 ### 📁 backend/
 Documentação do servidor e lógica de negócio
-- **server.md** - Documentação do servidor Express (server.js)
+- **server.md** - Documentação da API Express, rotas SaaS e lógica de cálculo (`server-saas.js` e `server.js`)
 
 ### 📁 frontend/
 Documentação da interface do usuário
@@ -31,6 +31,14 @@ Documentação da interface do usuário
 - 🎨 [CSS](./frontend/styles.md) - Estilização e design
 
 ## 📊 Módulos do Sistema
+
+### 🏢 Administrativo (SaaS)
+- Autenticação e Autorização (JWT)
+- Multi-tenancy (isolamento por empresa)
+- Gestão de Planos de Assinatura (Free, Pro, Enterprise)
+- Gestão de Funcionários
+
+**Arquivos:** `src/routes/auth.js`, `src/routes/plans.js`, `src/routes/funcionarios.js`
 
 ### 👥 Para Funcionários
 
@@ -95,6 +103,9 @@ Documentação da interface do usuário
 ### Backend
 - Node.js
 - Express.js
+- **SQLite / PostgreSQL** (Armazenamento SaaS)
+- **JWT (JSON Web Token)** (Autenticação)
+- **Bcryptjs** (Criptografia de senhas)
 
 ### Frontend
 - HTML5

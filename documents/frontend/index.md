@@ -1,8 +1,8 @@
-# 📄 Documentação do HTML (index.html)
+# 📄 Documentação do HTML Frontend
 
 ## Visão Geral
 
-O arquivo `index.html` define a estrutura da interface do usuário da Calculadora de Férias. É uma página responsiva e semântica que organiza o formulário de entrada e a área de resultados.
+Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de **Login**, **Dashboard** e a interface central da Calculadora de Férias. Todas as páginas (`index.html`, `login.html`, `dashboard.html`) seguem os mesmos princípios de semântica e responsividade listados abaixo.
 
 ## Estrutura do Documento
 

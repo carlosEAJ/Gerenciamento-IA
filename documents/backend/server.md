@@ -1,13 +1,14 @@
-# 🖥️ Documentação do Servidor (server.js)
+# 🖥️ Documentação do Servidor Backend (SaaS)
 
 ## Visão Geral
 
-O arquivo `server.js` é o coração do backend da aplicação. Ele implementa um servidor Express que serve arquivos estáticos e processa os cálculos de férias com todos os descontos legais.
+Com a transformação para SaaS, o servidor principal tornou-se o **`server-saas.js`**. Ele orquestra um servidor Express moderno que além de servir arquivos estáticos, lida com conexão a banco de dados (SQLite/PostgreSQL), autenticação JWT e rotas modulares separadas na pasta `src/`. O antigo `server.js` foi mantido provisoriamente por questões de retrocompatibilidade.
 
 ## Dependências
 
 ```javascript
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 ```
 
