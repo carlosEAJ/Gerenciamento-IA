@@ -27,96 +27,96 @@ router.post('/register', async (req, res) => {
   const dataFimTrial = new Date();
   dataFimTrial.setDate(dataFimTrial.getDate() + 7);
 
-  db.run(
-    'INSERT INTO empresas (razao_social, cnpj, email, plano_ativo, data_inicio_trial, data_fim_trial) VALUES (?, ?, ?, ?, ?, ?)', 
-    [razaoSocial, cnpjLimpo, email, 'Trial', dataInicioTrial.toISOString(), dataFimTrial.toISOString()], 
-    function(err) {
-      if (err) {
-        return res.status(400).json({ erro: 'CNPJ ou email já cadastrado' });
-      }
+  try {
+    const empresaResult = await db.query(
+      'INSERT INTO empresas (razao_social, cnpj, email, plano_ativo, data_inicio_trial, data_fim_trial) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', 
+      [razaoSocial, cnpjLimpo, email, 'Trial', dataInicioTrial.toISOString(), dataFimTrial.toISOString()]
+    );
+    const empresaId = empresaResult.rows[0].id;
 
-      const empresaId = this.lastID;
+    const usuarioResult = await db.query(
+      'INSERT INTO usuarios (empresa_id, nome, email, senha_hash, perfil) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+      [empresaId, nome, email, senhaHash, 'Admin']
+    );
 
-      db.run(
-        'INSERT INTO usuarios (empresa_id, nome, email, senha_hash, perfil) VALUES (?, ?, ?, ?, ?)',
-        [empresaId, nome, email, senhaHash, 'Admin'],
-        function(err) {
-          if (err) {
-            return res.status(400).json({ erro: 'Erro ao criar usuário' });
-          }
-
-          res.json({ 
-            mensagem: 'Empresa registrada com sucesso',
-            empresaId,
-            usuarioId: this.lastID,
-            plano: 'Trial',
-            diasTrial: 7,
-            dataFimTrial: dataFimTrial.toISOString()
-          });
-        }
-      );
+    res.json({ 
+      mensagem: 'Empresa registrada com sucesso',
+      empresaId,
+      usuarioId: usuarioResult.rows[0].id,
+      plano: 'Trial',
+      diasTrial: 7,
+      dataFimTrial: dataFimTrial.toISOString()
+    });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ erro: 'CNPJ ou email já cadastrado' });
     }
-  );
+    return res.status(400).json({ erro: 'Erro ao criar conta' });
+  }
 });
 
 // Login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
 
-  db.get(
-    `SELECT u.*, e.razao_social, e.cnpj, e.plano_ativo, e.data_fim_trial 
-     FROM usuarios u 
-     JOIN empresas e ON u.empresa_id = e.id 
-     WHERE u.email = ? AND u.ativo = 1`, 
-    [email], 
-    async (err, usuario) => {
-      if (err || !usuario) {
-        return res.status(401).json({ erro: 'Credenciais inválidas' });
-      }
-
-      const senhaValida = await bcrypt.compare(senha, usuario.senha_hash);
-      
-      if (!senhaValida) {
-        return res.status(401).json({ erro: 'Credenciais inválidas' });
-      }
-
-      // Verificar se trial expirou
-      let trialExpirado = false;
-      if (usuario.plano_ativo === 'Trial') {
-        const dataFimTrial = new Date(usuario.data_fim_trial);
-        trialExpirado = new Date() > dataFimTrial;
-      }
-
-      const token = jwt.sign(
-        { 
-          usuarioId: usuario.id, 
-          empresaId: usuario.empresa_id, 
-          perfil: usuario.perfil,
-          planoAtivo: usuario.plano_ativo,
-          dataFimTrial: usuario.data_fim_trial
-        },
-        SECRET,
-        { expiresIn: '7d' }
-      );
-
-      res.json({ 
-        token,
-        usuario: {
-          id: usuario.id,
-          nome: usuario.nome,
-          email: usuario.email,
-          perfil: usuario.perfil,
-          empresa: {
-            id: usuario.empresa_id,
-            razaoSocial: usuario.razao_social,
-            cnpj: usuario.cnpj,
-            planoAtivo: usuario.plano_ativo
-          }
-        },
-        trialExpirado
-      });
+  try {
+    const result = await db.query(
+      `SELECT u.*, e.razao_social, e.cnpj, e.plano_ativo, e.data_fim_trial 
+       FROM usuarios u 
+       JOIN empresas e ON u.empresa_id = e.id 
+       WHERE u.email = $1 AND u.ativo = true`, 
+      [email]
+    );
+    
+    const usuario = result.rows[0];
+    if (!usuario) {
+      return res.status(401).json({ erro: 'Credenciais inválidas' });
     }
-  );
+
+    const senhaValida = await bcrypt.compare(senha, usuario.senha_hash);
+    
+    if (!senhaValida) {
+      return res.status(401).json({ erro: 'Credenciais inválidas' });
+    }
+
+    // Verificar se trial expirou
+    let trialExpirado = false;
+    if (usuario.plano_ativo === 'Trial') {
+      const dataFimTrial = new Date(usuario.data_fim_trial);
+      trialExpirado = new Date() > dataFimTrial;
+    }
+
+    const token = jwt.sign(
+      { 
+        usuarioId: usuario.id, 
+        empresaId: usuario.empresa_id, 
+        perfil: usuario.perfil,
+        planoAtivo: usuario.plano_ativo,
+        dataFimTrial: usuario.data_fim_trial
+      },
+      SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({ 
+      token,
+      usuario: {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        perfil: usuario.perfil,
+        empresa: {
+          id: usuario.empresa_id,
+          razaoSocial: usuario.razao_social,
+          cnpj: usuario.cnpj,
+          planoAtivo: usuario.plano_ativo
+        }
+      },
+      trialExpirado
+    });
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro interno no servidor' });
+  }
 });
 
 module.exports = router;

@@ -67,83 +67,77 @@ router.post('/', auth, checkTrialValido, async (req, res) => {
   // Verificar limite do plano
   const mesAtual = new Date().toISOString().slice(0, 7);
   
-  db.get(
-    `SELECT COUNT(*) as count FROM historico_ferias 
-     WHERE empresa_id = ? AND strftime('%Y-%m', created_at) = ?`,
-    [empresaId, mesAtual],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({ erro: 'Erro ao verificar limite' });
-      }
+  try {
+    const countResult = await db.query(
+      `SELECT COUNT(*) as count FROM historico_ferias 
+       WHERE empresa_id = $1 AND TO_CHAR(created_at, 'YYYY-MM') = $2`,
+      [empresaId, mesAtual]
+    );
 
-      const limite = LIMITES_PLANO[planoAtivo] || LIMITES_PLANO.Trial;
-      
-      if (limite !== -1 && result.count >= limite) {
-        return res.status(403).json({ 
-          erro: 'Limite de cálculos atingido',
-          planoAtual: planoAtivo,
-          limite: limite,
-          usado: result.count,
-          mensagem: planoAtivo === 'Trial' ? 'Faça upgrade para continuar' : 'Limite mensal atingido'
-        });
-      }
-
-      // Buscar dados do funcionário
-      db.get(
-        'SELECT * FROM funcionarios WHERE id = ? AND empresa_id = ? AND ativo = 1',
-        [funcionarioId, empresaId],
-        (err, funcionario) => {
-          if (err || !funcionario) {
-            return res.status(404).json({ erro: 'Funcionário não encontrado ou inativo' });
-          }
-
-          // Realizar cálculo
-          const calculo = calcularFerias(funcionario.salario_base, diasSolicitados);
-
-          // Salvar no histórico
-          db.run(
-            `INSERT INTO historico_ferias (
-              funcionario_id, empresa_id, usuario_solicitante_id, dias_solicitados,
-              salario_base_momento, valor_ferias, adicional_terco, valor_bruto,
-              inss, irrf, liquido, data_inicio_ferias, data_fim_ferias, observacoes
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-              funcionarioId, empresaId, usuarioId, diasSolicitados,
-              funcionario.salario_base, calculo.valorFerias, calculo.adicionalTerco,
-              calculo.valorBruto, calculo.inss, calculo.irrf, calculo.liquido,
-              dataInicioFerias || null, dataFimFerias || null, observacoes || null
-            ],
-            function(err) {
-              if (err) {
-                return res.status(500).json({ erro: 'Erro ao salvar cálculo' });
-              }
-
-              res.json({
-                calculoId: this.lastID,
-                funcionario: {
-                  id: funcionario.id,
-                  nome: funcionario.nome,
-                  cpf: funcionario.cpf,
-                  salarioBase: funcionario.salario_base
-                },
-                diasSolicitados,
-                ...calculo,
-                uso: {
-                  plano: planoAtivo,
-                  calculosUsados: result.count + 1,
-                  limite: limite === -1 ? 'ilimitado' : limite
-                }
-              });
-            }
-          );
-        }
-      );
+    const count = parseInt(countResult.rows[0].count);
+    const limite = LIMITES_PLANO[planoAtivo] || LIMITES_PLANO.Trial;
+    
+    if (limite !== -1 && count >= limite) {
+      return res.status(403).json({ 
+        erro: 'Limite de cálculos atingido',
+        planoAtual: planoAtivo,
+        limite: limite,
+        usado: count,
+        mensagem: planoAtivo === 'Trial' ? 'Faça upgrade para continuar' : 'Limite mensal atingido'
+      });
     }
-  );
+
+    const funcResult = await db.query(
+      'SELECT * FROM funcionarios WHERE id = $1 AND empresa_id = $2 AND ativo = true',
+      [funcionarioId, empresaId]
+    );
+    
+    const funcionario = funcResult.rows[0];
+    if (!funcionario) {
+      return res.status(404).json({ erro: 'Funcionário não encontrado ou inativo' });
+    }
+
+    // Realizar cálculo
+    const calculo = calcularFerias(funcionario.salario_base, diasSolicitados);
+
+    // Salvar no histórico
+    const insertResult = await db.query(
+      `INSERT INTO historico_ferias (
+        funcionario_id, empresa_id, usuario_solicitante_id, dias_solicitados,
+        salario_base_momento, valor_ferias, adicional_terco, valor_bruto,
+        inss, irrf, liquido, data_inicio_ferias, data_fim_ferias, observacoes
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`,
+      [
+        funcionarioId, empresaId, usuarioId, diasSolicitados,
+        funcionario.salario_base, calculo.valorFerias, calculo.adicionalTerco,
+        calculo.valorBruto, calculo.inss, calculo.irrf, calculo.liquido,
+        dataInicioFerias || null, dataFimFerias || null, observacoes || null
+      ]
+    );
+
+    res.json({
+      calculoId: insertResult.rows[0].id,
+      funcionario: {
+        id: funcionario.id,
+        nome: funcionario.nome,
+        cpf: funcionario.cpf,
+        salarioBase: funcionario.salario_base
+      },
+      diasSolicitados,
+      ...calculo,
+      uso: {
+        plano: planoAtivo,
+        calculosUsados: count + 1,
+        limite: limite === -1 ? 'ilimitado' : limite
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao salvar cálculo' });
+  }
 });
 
 // Histórico de cálculos da empresa
-router.get('/historico', auth, checkTrialValido, (req, res) => {
+router.get('/historico', auth, checkTrialValido, async (req, res) => {
   const { empresaId } = req.user;
   const { funcionarioId, status, limite = 50 } = req.query;
 
@@ -156,59 +150,62 @@ router.get('/historico', auth, checkTrialValido, (req, res) => {
     FROM historico_ferias h
     JOIN funcionarios f ON h.funcionario_id = f.id
     JOIN usuarios u ON h.usuario_solicitante_id = u.id
-    WHERE h.empresa_id = ?
+  WHERE h.empresa_id = $1
   `;
   
   const params = [empresaId];
+  let paramIdx = 2;
 
   if (funcionarioId) {
-    query += ' AND h.funcionario_id = ?';
+    query += ` AND h.funcionario_id = $${paramIdx++}`;
     params.push(funcionarioId);
   }
 
   if (status) {
-    query += ' AND h.status = ?';
+    query += ` AND h.status = $${paramIdx++}`;
     params.push(status);
   }
 
-  query += ' ORDER BY h.created_at DESC LIMIT ?';
+  query += ` ORDER BY h.created_at DESC LIMIT $${paramIdx}`;
   params.push(parseInt(limite));
 
-  db.all(query, params, (err, historico) => {
-    if (err) {
-      return res.status(500).json({ erro: 'Erro ao buscar histórico' });
-    }
-    res.json(historico);
-  });
+  try {
+    const result = await db.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao buscar histórico' });
+  }
 });
 
 // Buscar cálculo específico
-router.get('/:id', auth, checkTrialValido, (req, res) => {
+router.get('/:id', auth, checkTrialValido, async (req, res) => {
   const { empresaId } = req.user;
   const { id } = req.params;
 
-  db.get(
-    `SELECT 
-      h.*,
-      f.nome as funcionario_nome,
-      f.cpf as funcionario_cpf,
-      u.nome as usuario_nome
-    FROM historico_ferias h
-    JOIN funcionarios f ON h.funcionario_id = f.id
-    JOIN usuarios u ON h.usuario_solicitante_id = u.id
-    WHERE h.id = ? AND h.empresa_id = ?`,
-    [id, empresaId],
-    (err, calculo) => {
-      if (err || !calculo) {
-        return res.status(404).json({ erro: 'Cálculo não encontrado' });
-      }
-      res.json(calculo);
+  try {
+    const result = await db.query(
+      `SELECT 
+        h.*,
+        f.nome as funcionario_nome,
+        f.cpf as funcionario_cpf,
+        u.nome as usuario_nome
+      FROM historico_ferias h
+      JOIN funcionarios f ON h.funcionario_id = f.id
+      JOIN usuarios u ON h.usuario_solicitante_id = u.id
+      WHERE h.id = $1 AND h.empresa_id = $2`,
+      [id, empresaId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ erro: 'Cálculo não encontrado' });
     }
-  );
+    res.json(result.rows[0]);
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao buscar cálculo' });
+  }
 });
 
 // Atualizar status do cálculo (apenas Admin e RH)
-router.patch('/:id/status', auth, checkTrialValido, (req, res) => {
+router.patch('/:id/status', auth, checkTrialValido, async (req, res) => {
   const { empresaId, perfil } = req.user;
   const { id } = req.params;
   const { status } = req.body;
@@ -222,19 +219,18 @@ router.patch('/:id/status', auth, checkTrialValido, (req, res) => {
     return res.status(400).json({ erro: 'Status inválido', statusValidos });
   }
 
-  db.run(
-    'UPDATE historico_ferias SET status = ? WHERE id = ? AND empresa_id = ?',
-    [status, id, empresaId],
-    function(err) {
-      if (err) {
-        return res.status(500).json({ erro: 'Erro ao atualizar status' });
-      }
-      if (this.changes === 0) {
-        return res.status(404).json({ erro: 'Cálculo não encontrado' });
-      }
-      res.json({ mensagem: 'Status atualizado com sucesso', novoStatus: status });
+  try {
+    const result = await db.query(
+      'UPDATE historico_ferias SET status = $1 WHERE id = $2 AND empresa_id = $3',
+      [status, id, empresaId]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ erro: 'Cálculo não encontrado' });
     }
-  );
+    res.json({ mensagem: 'Status atualizado com sucesso', novoStatus: status });
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao atualizar status' });
+  }
 });
 
 module.exports = router;

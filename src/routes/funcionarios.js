@@ -5,43 +5,44 @@ const { auth, checkPerfil, checkTrialValido } = require('../middleware/auth');
 const router = express.Router();
 
 // Listar funcionários da empresa
-router.get('/', auth, checkTrialValido, (req, res) => {
+router.get('/', auth, checkTrialValido, async (req, res) => {
   const { empresaId } = req.user;
 
-  db.all(
-    `SELECT id, nome, cpf, salario_base, data_admissao, ativo, created_at 
-     FROM funcionarios 
-     WHERE empresa_id = ? 
-     ORDER BY nome ASC`,
-    [empresaId],
-    (err, funcionarios) => {
-      if (err) {
-        return res.status(500).json({ erro: 'Erro ao buscar funcionários' });
-      }
-      res.json(funcionarios);
-    }
-  );
+  try {
+    const result = await db.query(
+      `SELECT id, nome, cpf, salario_base, data_admissao, ativo, created_at 
+       FROM funcionarios 
+       WHERE empresa_id = $1 
+       ORDER BY nome ASC`,
+      [empresaId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao buscar funcionários' });
+  }
 });
 
 // Buscar funcionário específico
-router.get('/:id', auth, checkTrialValido, (req, res) => {
+router.get('/:id', auth, checkTrialValido, async (req, res) => {
   const { empresaId } = req.user;
   const { id } = req.params;
 
-  db.get(
-    'SELECT * FROM funcionarios WHERE id = ? AND empresa_id = ?',
-    [id, empresaId],
-    (err, funcionario) => {
-      if (err || !funcionario) {
-        return res.status(404).json({ erro: 'Funcionário não encontrado' });
-      }
-      res.json(funcionario);
+  try {
+    const result = await db.query(
+      'SELECT * FROM funcionarios WHERE id = $1 AND empresa_id = $2',
+      [id, empresaId]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ erro: 'Funcionário não encontrado' });
     }
-  );
+    res.json(result.rows[0]);
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao buscar funcionário' });
+  }
 });
 
 // Cadastrar novo funcionário (apenas Admin e RH)
-router.post('/', auth, checkTrialValido, checkPerfil('Admin', 'RH'), (req, res) => {
+router.post('/', auth, checkTrialValido, checkPerfil('Admin', 'RH'), async (req, res) => {
   const { empresaId } = req.user;
   const { nome, cpf, salarioBase, dataAdmissao } = req.body;
 
@@ -60,27 +61,25 @@ router.post('/', auth, checkTrialValido, checkPerfil('Admin', 'RH'), (req, res) 
     return res.status(400).json({ erro: 'Salário deve ser maior que zero' });
   }
 
-  db.run(
-    'INSERT INTO funcionarios (empresa_id, nome, cpf, salario_base, data_admissao) VALUES (?, ?, ?, ?, ?)',
-    [empresaId, nome, cpfLimpo, salarioBase, dataAdmissao],
-    function(err) {
-      if (err) {
-        if (err.message.includes('UNIQUE')) {
-          return res.status(400).json({ erro: 'CPF já cadastrado nesta empresa' });
-        }
-        return res.status(500).json({ erro: 'Erro ao cadastrar funcionário' });
-      }
-
-      res.status(201).json({
-        mensagem: 'Funcionário cadastrado com sucesso',
-        funcionarioId: this.lastID
-      });
+  try {
+    const result = await db.query(
+      'INSERT INTO funcionarios (empresa_id, nome, cpf, salario_base, data_admissao) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+      [empresaId, nome, cpfLimpo, salarioBase, dataAdmissao]
+    );
+    res.status(201).json({
+      mensagem: 'Funcionário cadastrado com sucesso',
+      funcionarioId: result.rows[0].id
+    });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ erro: 'CPF já cadastrado nesta empresa' });
     }
-  );
+    return res.status(500).json({ erro: 'Erro ao cadastrar funcionário' });
+  }
 });
 
 // Atualizar funcionário (apenas Admin e RH)
-router.put('/:id', auth, checkTrialValido, checkPerfil('Admin', 'RH'), (req, res) => {
+router.put('/:id', auth, checkTrialValido, checkPerfil('Admin', 'RH'), async (req, res) => {
   const { empresaId } = req.user;
   const { id } = req.params;
   const { nome, salarioBase, ativo } = req.body;
@@ -89,19 +88,19 @@ router.put('/:id', auth, checkTrialValido, checkPerfil('Admin', 'RH'), (req, res
   const values = [];
 
   if (nome !== undefined) {
-    updates.push('nome = ?');
     values.push(nome);
+    updates.push(`nome = $${values.length}`);
   }
   if (salarioBase !== undefined) {
     if (salarioBase <= 0) {
       return res.status(400).json({ erro: 'Salário deve ser maior que zero' });
     }
-    updates.push('salario_base = ?');
     values.push(salarioBase);
+    updates.push(`salario_base = $${values.length}`);
   }
   if (ativo !== undefined) {
-    updates.push('ativo = ?');
-    values.push(ativo ? 1 : 0);
+    values.push(ativo ? true : false);
+    updates.push(`ativo = $${values.length}`);
   }
 
   if (updates.length === 0) {
@@ -110,40 +109,40 @@ router.put('/:id', auth, checkTrialValido, checkPerfil('Admin', 'RH'), (req, res
 
   updates.push('updated_at = CURRENT_TIMESTAMP');
   values.push(id, empresaId);
+  const idIndex = values.length - 1;
+  const empresaIdIndex = values.length;
 
-  db.run(
-    `UPDATE funcionarios SET ${updates.join(', ')} WHERE id = ? AND empresa_id = ?`,
-    values,
-    function(err) {
-      if (err) {
-        return res.status(500).json({ erro: 'Erro ao atualizar funcionário' });
-      }
-      if (this.changes === 0) {
-        return res.status(404).json({ erro: 'Funcionário não encontrado' });
-      }
-      res.json({ mensagem: 'Funcionário atualizado com sucesso' });
+  try {
+    const result = await db.query(
+      `UPDATE funcionarios SET ${updates.join(', ')} WHERE id = $${idIndex} AND empresa_id = $${empresaIdIndex}`,
+      values
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ erro: 'Funcionário não encontrado' });
     }
-  );
+    res.json({ mensagem: 'Funcionário atualizado com sucesso' });
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao atualizar funcionário' });
+  }
 });
 
 // Desativar funcionário (soft delete - apenas Admin)
-router.delete('/:id', auth, checkTrialValido, checkPerfil('Admin'), (req, res) => {
+router.delete('/:id', auth, checkTrialValido, checkPerfil('Admin'), async (req, res) => {
   const { empresaId } = req.user;
   const { id } = req.params;
 
-  db.run(
-    'UPDATE funcionarios SET ativo = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND empresa_id = ?',
-    [id, empresaId],
-    function(err) {
-      if (err) {
-        return res.status(500).json({ erro: 'Erro ao desativar funcionário' });
-      }
-      if (this.changes === 0) {
-        return res.status(404).json({ erro: 'Funcionário não encontrado' });
-      }
-      res.json({ mensagem: 'Funcionário desativado com sucesso' });
+  try {
+    const result = await db.query(
+      'UPDATE funcionarios SET ativo = false, updated_at = CURRENT_TIMESTAMP WHERE id = $1 AND empresa_id = $2',
+      [id, empresaId]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ erro: 'Funcionário não encontrado' });
     }
-  );
+    res.json({ mensagem: 'Funcionário desativado com sucesso' });
+  } catch (err) {
+    return res.status(500).json({ erro: 'Erro ao desativar funcionário' });
+  }
 });
 
 module.exports = router;
