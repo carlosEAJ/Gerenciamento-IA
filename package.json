@@ -1,0 +1,12 @@
+{
+  "name": "calculadora-ferias",
+  "version": "1.0.0",
+  "description": "Sistema de cálculo de férias",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

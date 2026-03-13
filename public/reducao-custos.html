@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sugestões de Redução de Custos</title>
+  <link rel="stylesheet" href="reducao-custos.css">
+  <link rel="stylesheet" href="menu-global.css">
+</head>
+<body>
+  <!-- Menu Lateral -->
+  <button class="menu-toggle">☰</button>
+  <div class="sidebar-overlay"></div>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>📋 Menu</h2>
+      <button class="close-sidebar">×</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="menu-category">
+        <div class="category-header">
+          <span>👥</span>
+          <span>Para Funcionários</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="calculadora.html">
+              <span class="menu-icon">💰</span>
+              <span>Calculadora de Férias</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="investimentos.html">
+              <span class="menu-icon">📚</span>
+              <span>Educação Financeira</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="menu-category">
+        <div class="category-header">
+          <span>🏢</span>
+          <span>Para Empresa</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="captacao.html">
+              <span class="menu-icon">📈</span>
+              <span>Captação de Recursos</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="reducao-custos.html">
+              <span class="menu-icon">💡</span>
+              <span>Sugestões de Economia</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Botão Voltar -->
+  <a href="index.html" class="back-button">
+    <span>←</span>
+    <span>Voltar</span>
+  </a>
+
+  <header>
+    <h1>💡 Sugestões de Redução de Custos</h1>
+    <p>Ajude a empresa a economizar! Suas ideias fazem a diferença</p>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="intro-section">
+        <h2>Sua Opinião é Importante!</h2>
+        <p>Você identificou alguma oportunidade de economia na empresa? Compartilhe suas sugestões conosco! Seja por texto ou planilha, queremos ouvir suas ideias para reduzir custos e melhorar nossa eficiência.</p>
+        <div class="benefits">
+          <div class="benefit-item">
+            <span class="benefit-icon">✅</span>
+            <span>Contribua com a empresa</span>
+          </div>
+          <div class="benefit-item">
+            <span class="benefit-icon">🏆</span>
+            <span>Reconhecimento por boas ideias</span>
+          </div>
+          <div class="benefit-item">
+            <span class="benefit-icon">💰</span>
+            <span>Ajude a melhorar resultados</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="input-section">
+        <h2>Como Deseja Enviar sua Sugestão?</h2>
+        
+        <div class="method-tabs">
+          <button class="tab-button active" data-tab="texto">✍️ Descrição por Texto</button>
+          <button class="tab-button" data-tab="planilha">📊 Enviar Planilha</button>
+        </div>
+
+        <!-- Sugestão por Texto -->
+        <div class="tab-content active" id="texto">
+          <div class="text-input">
+            <form id="formTexto">
+              <div class="input-group">
+                <label for="nomeFunc">Seu Nome</label>
+                <input type="text" id="nomeFunc" placeholder="Ex: João Silva" required>
+              </div>
+
+              <div class="input-group">
+                <label for="setor">Setor/Departamento</label>
+                <input type="text" id="setor" placeholder="Ex: Administrativo" required>
+              </div>
+
+              <div class="input-group">
+                <label for="categoria">Categoria da Sugestão</label>
+                <select id="categoria" required>
+                  <option value="">Selecione uma categoria</option>
+                  <option value="energia">Energia Elétrica</option>
+                  <option value="agua">Água e Saneamento</option>
+                  <option value="materiais">Materiais de Escritório</option>
+                  <option value="equipamentos">Equipamentos e Manutenção</option>
+                  <option value="fornecedores">Fornecedores e Contratos</option>
+                  <option value="processos">Processos e Produtividade</option>
+                  <option value="tecnologia">Tecnologia e Sistemas</option>
+                  <option value="logistica">Logística e Transporte</option>
+                  <option value="outros">Outros</option>
+                </select>
+              </div>
+
+              <div class="input-group">
+                <label for="itemAtual">Item/Processo Atual</label>
+                <input type="text" id="itemAtual" placeholder="Ex: Impressão de documentos" required>
+              </div>
+
+              <div class="input-group">
+                <label for="custoAtual">Custo Atual Estimado (R$) - Opcional</label>
+                <input type="number" id="custoAtual" step="0.01" min="0" placeholder="Ex: 500.00">
+              </div>
+
+              <div class="input-group">
+                <label for="sugestao">Sua Sugestão de Melhoria</label>
+                <textarea id="sugestao" rows="5" placeholder="Descreva sua sugestão de forma clara e detalhada..." required></textarea>
+              </div>
+
+              <div class="input-group">
+                <label for="economiaPrev">Economia Prevista (R$) - Opcional</label>
+                <input type="number" id="economiaPrev" step="0.01" min="0" placeholder="Ex: 200.00">
+              </div>
+
+              <div class="input-group">
+                <label for="justificativa">Justificativa/Benefícios</label>
+                <textarea id="justificativa" rows="3" placeholder="Explique por que essa mudança seria benéfica..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit">Enviar Sugestão</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Enviar Planilha -->
+        <div class="tab-content" id="planilha">
+          <div class="spreadsheet-input">
+            <div class="form-header">
+              <div class="input-group">
+                <label for="nomeFuncPlan">Seu Nome</label>
+                <input type="text" id="nomeFuncPlan" placeholder="Ex: João Silva" required>
+              </div>
+
+              <div class="input-group">
+                <label for="setorPlan">Setor/Departamento</label>
+                <input type="text" id="setorPlan" placeholder="Ex: Administrativo" required>
+              </div>
+            </div>
+
+            <div class="format-info">
+              <h4>📋 Formato da Planilha:</h4>
+              <p>Sua planilha deve conter as seguintes colunas:</p>
+              <ul>
+                <li><strong>produto:</strong> Nome do item/serviço/processo</li>
+                <li><strong>preco:</strong> Custo atual em reais</li>
+              </ul>
+              <p class="optional-info">Você pode adicionar colunas extras como: sugestao, economia_prevista, justificativa</p>
+              
+              <div class="example-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>produto</th>
+                      <th>preco</th>
+                      <th>sugestao (opcional)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Papel A4</td>
+                      <td>500.00</td>
+                      <td>Digitalizar processos</td>
+                    </tr>
+                    <tr>
+                      <td>Energia Elétrica</td>
+                      <td>3500.00</td>
+                      <td>Instalar painéis solares</td>
+                    </tr>
+                    <tr>
+                      <td>Serviço de Limpeza</td>
+                      <td>2000.00</td>
+                      <td>Renegociar contrato</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <a href="#" class="download-template" id="downloadTemplate">📥 Baixar Modelo de Planilha</a>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+              <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
+              <div class="upload-content">
+                <span class="upload-icon">📁</span>
+                <p>Arraste o arquivo aqui ou clique para selecionar</p>
+                <span class="file-types">Formatos aceitos: .xlsx, .xls, .csv</span>
+              </div>
+            </div>
+
+            <div class="file-info" id="fileInfo" style="display: none;">
+              <p><strong>Arquivo selecionado:</strong> <span id="fileName"></span></p>
+              <div class="file-actions">
+                <button class="btn-submit" id="btnEnviarPlanilha">Enviar Planilha</button>
+                <button class="btn-remove" id="btnRemoveFile">Remover Arquivo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="success-section" id="successSection" style="display: none;">
+        <div class="success-content">
+          <span class="success-icon">✅</span>
+          <h2>Sugestão Enviada com Sucesso!</h2>
+          <p>Obrigado por contribuir com a empresa. Sua sugestão será analisada pela equipe de gestão.</p>
+          <div class="success-details" id="successDetails"></div>
+          <button class="btn-new" id="btnNovaSugestao">Enviar Nova Sugestão</button>
+        </div>
+      </section>
+
+      <section class="examples-section">
+        <h2>💡 Exemplos de Sugestões</h2>
+        
+        <div class="examples-grid">
+          <div class="example-card">
+            <h3>💡 Energia</h3>
+            <p><strong>Problema:</strong> Alto consumo de energia elétrica</p>
+            <p><strong>Sugestão:</strong> Instalar sensores de presença nas salas e trocar lâmpadas por LED</p>
+            <p><strong>Economia:</strong> Até 30% na conta de luz</p>
+          </div>
+
+          <div class="example-card">
+            <h3>📝 Materiais</h3>
+            <p><strong>Problema:</strong> Gasto excessivo com papel</p>
+            <p><strong>Sugestão:</strong> Digitalizar documentos e usar assinatura eletrônica</p>
+            <p><strong>Economia:</strong> Redução de 70% no consumo de papel</p>
+          </div>
+
+          <div class="example-card">
+            <h3>🚚 Logística</h3>
+            <p><strong>Problema:</strong> Rotas de entrega não otimizadas</p>
+            <p><strong>Sugestão:</strong> Usar software de roteirização para planejar entregas</p>
+            <p><strong>Economia:</strong> 20% em combustível e tempo</p>
+          </div>
+
+          <div class="example-card">
+            <h3>💻 Tecnologia</h3>
+            <p><strong>Problema:</strong> Múltiplas assinaturas de software</p>
+            <p><strong>Sugestão:</strong> Consolidar ferramentas em plataforma única</p>
+            <p><strong>Economia:</strong> Até R$ 500/mês</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="tips-section">
+        <h2>🎯 Dicas para uma Boa Sugestão</h2>
+        <div class="tips-list">
+          <div class="tip-item">
+            <span class="tip-number">1</span>
+            <div class="tip-content">
+              <h4>Seja Específico</h4>
+              <p>Descreva claramente o problema e a solução proposta</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">2</span>
+            <div class="tip-content">
+              <h4>Apresente Números</h4>
+              <p>Se possível, estime custos atuais e economia esperada</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">3</span>
+            <div class="tip-content">
+              <h4>Justifique</h4>
+              <p>Explique os benefícios além da economia financeira</p>
+            </div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-number">4</span>
+            <div class="tip-content">
+              <h4>Seja Realista</h4>
+              <p>Proponha soluções viáveis e aplicáveis</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Sistema de Gestão de Férias</p>
+    <p>Suas sugestões são valiosas para o crescimento da empresa</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="reducao-custos.js"></script>
+  <script src="menu-global.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+# 🎯 Visão Geral do Sistema
+
+## Descrição do Projeto
+
+O **Sistema de Gestão de Férias** é uma plataforma web completa que oferece múltiplas funcionalidades para funcionários e empresa, incluindo cálculo de férias, educação financeira, captação de recursos e sugestões de economia.
+
+## Arquitetura do Sistema
+
+### Modelo Cliente-Servidor
+
+```
+┌─────────────┐         HTTP          ┌─────────────┐
+│   Cliente   │ ◄──────────────────► │   Servidor  │
+│  (Browser)  │   POST /calcular     │  (Node.js)  │
+│             │      JSON            │             │
+└─────────────┘                       └─────────────┘
+     │                                      │
+     │                                      │
+  Frontend                              Backend
+  ────────                              ───────
+  - HTML                                - Express
+  - CSS                                 - Lógica de
+  - JavaScript                            Cálculo
+  - Chart.js                            - APIs
+```
+
+## Módulos do Sistema
+
+### 👥 Para Funcionários
+
+#### 1. Calculadora de Férias
+- **Tecnologia**: Node.js + Express
+- **Funcionalidades**:
+  - Cálculo automatizado de férias
+  - Descontos de INSS e IRRF
+  - Explicações detalhadas
+  - Interface responsiva
+
+**Arquivos:**
+- `public/calculadora.html` - Interface principal ([Documentação HTML](./frontend/index.md))
+- `public/styles.css` - Estilização ([Documentação CSS](./frontend/styles.md))
+- `public/script.js` - Lógica frontend ([Documentação JavaScript](./frontend/script.md))
+- `server.js` - Lógica backend ([Documentação Backend](./backend/server.md))
+
+#### 2. Educação Financeira
+- **Tecnologia**: HTML5 + CSS3
+- **Funcionalidades**:
+  - Conceitos de investimentos
+  - Explicação sobre dividendos
+  - Guia de primeiros passos
+  - Recursos educacionais
+
+**Arquivos:**
+- `public/investimentos.html` - Conteúdo educacional
+- `public/investimentos.css` - Estilização
+
+### 🏢 Para Empresa
+
+#### 3. Captação de Recursos
+- **Tecnologia**: Chart.js + JavaScript
+- **Funcionalidades**:
+  - Gráficos interativos
+  - Comparativo de períodos
+  - Análise e insights
+  - Exportação para Excel
+
+**Arquivos:**
+- `public/captacao.html` - Interface de captação
+- `public/captacao.css` - Estilização
+- `public/captacao.js` - Lógica, gráficos e análises
+
+#### 4. Sugestões de Economia
+- **Tecnologia**: SheetJS + JavaScript
+- **Funcionalidades**:
+  - Envio de sugestões por texto
+  - Upload de planilhas Excel
+  - Sistema de categorização
+  - Confirmação de envio
+
+**Arquivos:**
+- `public/reducao-custos.html` - Interface de sugestões
+- `public/reducao-custos.css` - Estilização
+- `public/reducao-custos.js` - Lógica de upload e processamento
+
+## Navegação do Sistema
+
+### Menu Lateral Global
+- **Posição**: Fixa à esquerda
+- **Ativação**: Botão hamburguer (☰)
+- **Estrutura**:
+  - Categorias organizadas
+  - Ícones visuais
+  - Indicador de página ativa
+  - Responsivo para mobile
+
+**Arquivos:**
+- `public/menu-global.css` - Estilos do menu lateral e botão voltar
+- `public/menu-global.js` - Lógica de controle, abertura/fechamento
+
+### Botão Voltar
+- **Posição**: Fixa no canto superior direito
+- **Função**: Retorna à página inicial
+- **Design**: Consistente em todas as páginas
+
+**Implementação:**
+- Presente em: `calculadora.html`, `investimentos.html`, `captacao.html`, `reducao-custos.html`
+- Estilizado em: `menu-global.css`
+
+## Fluxo de Navegação
+
+```
+┌─────────────────┐
+│  Página Inicial │
+│   (index.html)  │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+┌───▼──┐  ┌──▼───┐
+│ Para │  │ Para │
+│Func. │  │Empre.│
+└───┬──┘  └──┬───┘
+    │         │
+┌───▼──────┐  ┌──▼──────────┐
+│Calculad. │  │ Captação    │
+│Educação  │  │ Sugestões   │
+└──────────┘  └─────────────┘
+```
+
+## Tecnologias Utilizadas
+
+| Camada | Tecnologia | Versão | Uso |
+|--------|-----------|--------|-----|
+| Runtime | Node.js | - | Servidor backend |
+| Framework | Express | ^4.x | API REST |
+| Frontend | HTML5 | - | Estrutura |
+| Estilização | CSS3 | - | Design |
+| Interação | JavaScript ES6+ | - | Lógica |
+| Gráficos | Chart.js | 4.x | Visualizações |
+| Excel | SheetJS | 0.18.5 | Import/Export |
+
+## Estrutura de Arquivos
+
+```
+projeto-raiz/
+├── server.js                    # Servidor Express
+├── package.json                 # Dependências
+├── public/                      # Arquivos públicos
+│   ├── index.html              # Página inicial
+│   ├── home.css                # Estilos home
+│   ├── calculadora.html        # Calculadora de férias
+│   ├── styles.css              # Estilos calculadora
+│   ├── script.js               # Lógica calculadora
+│   ├── investimentos.html      # Educação financeira
+│   ├── investimentos.css       # Estilos investimentos
+│   ├── captacao.html           # Captação de recursos
+│   ├── captacao.css            # Estilos captação
+│   ├── captacao.js             # Lógica captação
+│   ├── reducao-custos.html     # Sugestões economia
+│   ├── reducao-custos.css      # Estilos sugestões
+│   ├── reducao-custos.js       # Lógica sugestões
+│   ├── menu-global.css         # Estilos menu lateral
+│   └── menu-global.js          # Lógica menu lateral
+└── documents/                   # Documentação
+    ├── README.md
+    ├── visao-geral.md
+    ├── backend/
+    └── frontend/
+```
+
+## Endpoints da API
+
+### POST /calcular-ferias
+
+**Arquivo:** `server.js` ([Documentação completa](./backend/server.md))
+
+**Request Body:**
+```json
+{
+  "salarioBruto": 3000.00,
+  "diasFerias": 30
+}
+```
+
+**Response:**
+```json
+{
+  "salarioBruto": "3000.00",
+  "diasFerias": 30,
+  "valorFerias": "3000.00",
+  "adicionalTerco": "1000.00",
+  "totalBruto": "4000.00",
+  "inss": "466.96",
+  "irrf": "263.23",
+  "totalLiquido": "3269.81",
+  "explicacao": { ... }
+}
+```
+
+## Funcionalidades Principais
+
+### Calculadora de Férias
+**Arquivo:** `server.js` ([Documentação Backend](./backend/server.md)) + `script.js` ([Documentação Frontend](./frontend/script.md))
+
+- Cálculo proporcional de férias
+- Adicional constitucional de 1/3
+- Descontos de INSS (progressivo)
+- Descontos de IRRF (progressivo)
+- Explicações detalhadas
+
+### Educação Financeira
+**Arquivo:** `public/investimentos.html`
+
+- Conceitos fundamentais de investimento
+- Explicação sobre dividendos
+- Tipos de proventos
+- Estratégias de investimento
+- Recursos para aprendizado
+
+### Captação de Recursos
+**Arquivo:** `public/captacao.js`
+
+- Visualização mensal e anual
+- Gráficos comparativos
+- Análise de tendências
+- Insights automáticos
+- Exportação de dados
+
+### Sugestões de Economia
+**Arquivo:** `public/reducao-custos.js`
+
+- Formulário de sugestões
+- Upload de planilhas Excel
+- Categorização automática
+- Exemplos práticos
+- Confirmação de envio
+
+## Segurança e Validações
+
+- Validação de entrada no servidor
+- Tratamento de erros com status HTTP apropriados
+- Limitação de valores (dias entre 1-30)
+- Cálculos com precisão de 2 casas decimais
+- Validação de formato de arquivos
+- Sanitização de dados de entrada
+
+## Responsividade
+
+- Design adaptável para desktop, tablet e mobile
+- Menu lateral responsivo
+- Gráficos ajustáveis
+- Tabelas com scroll horizontal
+- Botões e fontes otimizados para touch

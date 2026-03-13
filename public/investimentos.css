@@ -1,0 +1,538 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: #333;
+}
+
+header {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  color: #11998e;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+section {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #11998e;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  border-bottom: 3px solid #38ef7d;
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  color: #0d7a6f;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+h4 {
+  color: #333;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+p {
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Intro Section */
+.intro-section p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.benefit-card {
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.benefit-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0;
+}
+
+/* Concepts Section */
+.concept-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #11998e;
+}
+
+.concept-card:last-child {
+  margin-bottom: 0;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.comparison-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-item h4 {
+  margin-bottom: 1rem;
+  color: #11998e;
+}
+
+.comparison-item ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.comparison-item li {
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  position: relative;
+}
+
+.comparison-item li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #11998e;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.example-box {
+  background: #fff3cd;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  border-left: 4px solid #ffc107;
+}
+
+.example-box h4 {
+  color: #856404;
+  margin-bottom: 1rem;
+}
+
+.example-box ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0;
+}
+
+.example-box li {
+  padding: 0.3rem 0;
+  color: #555;
+}
+
+.highlight {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.diversification-example {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.portfolio-item {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.percentage {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Dividends Section */
+.dividends-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.dividend-intro {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  border-left: 4px solid #11998e;
+}
+
+.how-it-works {
+  margin-bottom: 2rem;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.step-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.step-number {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.step-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.step-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.type-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.type-card h4 {
+  color: #11998e;
+  margin-bottom: 0.8rem;
+}
+
+.type-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.dividend-example {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 2rem 0;
+}
+
+.example-content p {
+  margin-bottom: 0.8rem;
+}
+
+.highlight-box {
+  background: #d4edda;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+  margin-top: 1rem;
+}
+
+.highlight-box p {
+  color: #155724;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.strategy-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.strategy-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #11998e;
+}
+
+.strategy-card h4 {
+  color: #11998e;
+  margin-bottom: 0.8rem;
+}
+
+.strategy-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.dividend-tips {
+  background: #fff3cd;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+  border-left: 4px solid #ffc107;
+}
+
+.dividend-tips h3 {
+  color: #856404;
+  margin-bottom: 1rem;
+}
+
+.dividend-tips ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.dividend-tips li {
+  padding: 0.8rem 0 0.8rem 2rem;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dividend-tips li:last-child {
+  border-bottom: none;
+}
+
+.dividend-tips li:before {
+  content: "⚠️";
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+/* Getting Started */
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.step-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.step-item:hover {
+  transform: translateX(10px);
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+/* Resources Section */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.resource-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-top: 4px solid #11998e;
+}
+
+.resource-card h3 {
+  margin-bottom: 1rem;
+}
+
+.resource-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.resource-card li {
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  position: relative;
+  color: #555;
+}
+
+.resource-card li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #11998e;
+  font-weight: bold;
+}
+
+/* Back Link */
+.back-link {
+  text-align: center;
+  padding: 1rem;
+}
+
+.back-link a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.8rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  transition: background 0.3s;
+  display: inline-block;
+}
+
+.back-link a:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Footer */
+footer {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: auto;
+}
+
+footer p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+footer strong {
+  color: #ffc107;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  section {
+    padding: 1.5rem;
+  }
+
+  .benefits-grid,
+  .comparison,
+  .steps-grid,
+  .types-grid,
+  .strategy-cards,
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .diversification-example {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .step-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .step-icon {
+    font-size: 2rem;
+  }
+}

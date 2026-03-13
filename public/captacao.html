@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Captação de Recursos</title>
+  <link rel="stylesheet" href="captacao.css">
+  <link rel="stylesheet" href="menu-global.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Menu Lateral -->
+  <button class="menu-toggle">☰</button>
+  <div class="sidebar-overlay"></div>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>📋 Menu</h2>
+      <button class="close-sidebar">×</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="menu-category">
+        <div class="category-header">
+          <span>👥</span>
+          <span>Para Funcionários</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="calculadora.html">
+              <span class="menu-icon">💰</span>
+              <span>Calculadora de Férias</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="investimentos.html">
+              <span class="menu-icon">📚</span>
+              <span>Educação Financeira</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="menu-category">
+        <div class="category-header">
+          <span>🏢</span>
+          <span>Para Empresa</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="captacao.html">
+              <span class="menu-icon">📈</span>
+              <span>Captação de Recursos</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="reducao-custos.html">
+              <span class="menu-icon">💡</span>
+              <span>Sugestões de Economia</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Botão Voltar -->
+  <a href="index.html" class="back-button">
+    <span>←</span>
+    <span>Voltar</span>
+  </a>
+
+  <header>
+    <h1>📊 Captação de Recursos</h1>
+    <p>Acompanhe a evolução da captação da empresa</p>
+  </header>
+
+  <main>
+    <div class="container">
+      
+      <!-- Resumo Geral -->
+      <section class="summary-section">
+        <h2>Resumo Geral</h2>
+        <div class="summary-cards">
+          <div class="summary-card current">
+            <h3>Captação Atual</h3>
+            <p class="period" id="currentPeriod">-</p>
+            <p class="value" id="currentValue">R$ 0,00</p>
+          </div>
+          <div class="summary-card previous">
+            <h3>Captação Anterior</h3>
+            <p class="period" id="previousPeriod">-</p>
+            <p class="value" id="previousValue">R$ 0,00</p>
+          </div>
+          <div class="summary-card comparison">
+            <h3>Variação</h3>
+            <p class="variation" id="variation">0%</p>
+            <p class="status" id="status">-</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filtros -->
+      <section class="filters-section">
+        <h2>Filtros de Visualização</h2>
+        <div class="filters-container">
+          <div class="filter-group">
+            <label for="viewType">Tipo de Visualização</label>
+            <select id="viewType">
+              <option value="monthly">Mensal</option>
+              <option value="yearly">Anual</option>
+            </select>
+          </div>
+
+          <div class="filter-group" id="monthFilterGroup">
+            <label for="monthFilter">Mês</label>
+            <select id="monthFilter">
+              <option value="1">Janeiro</option>
+              <option value="2">Fevereiro</option>
+              <option value="3">Março</option>
+              <option value="4">Abril</option>
+              <option value="5">Maio</option>
+              <option value="6">Junho</option>
+              <option value="7">Julho</option>
+              <option value="8">Agosto</option>
+              <option value="9">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="yearFilter">Ano</label>
+            <select id="yearFilter">
+              <!-- Preenchido dinamicamente -->
+            </select>
+          </div>
+
+          <button class="btn-apply" id="btnApplyFilter">Aplicar Filtro</button>
+        </div>
+      </section>
+
+      <!-- Gráfico -->
+      <section class="chart-section">
+        <h2>Gráfico de Captação</h2>
+        <div class="chart-container">
+          <canvas id="captacaoChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Comparativo Detalhado -->
+      <section class="comparison-section">
+        <h2>Comparativo Detalhado</h2>
+        <div class="comparison-table-container">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Período</th>
+                <th>Captação Anterior</th>
+                <th>Captação Atual</th>
+                <th>Diferença</th>
+                <th>Variação %</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonTableBody">
+              <!-- Preenchido dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Análise e Insights -->
+      <section class="insights-section">
+        <h2>📈 Análise e Insights</h2>
+        <div id="insightsContainer">
+          <!-- Preenchido dinamicamente -->
+        </div>
+      </section>
+
+      <!-- Histórico Completo -->
+      <section class="history-section">
+        <h2>📅 Histórico Completo</h2>
+        <div class="history-controls">
+          <button class="btn-export" id="btnExport">📥 Exportar para Excel</button>
+        </div>
+        <div class="history-table-container">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Mês/Ano</th>
+                <th>Valor Captado</th>
+                <th>Variação</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <!-- Preenchido dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Sistema de Gestão de Férias</p>
+    <p>Dados atualizados em tempo real</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="captacao.js"></script>
+  <script src="menu-global.js"></script>
+</body>
+</html>

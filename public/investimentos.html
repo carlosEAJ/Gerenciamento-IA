@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educação Financeira - Investimentos</title>
+  <link rel="stylesheet" href="investimentos.css">
+  <link rel="stylesheet" href="menu-global.css">
+</head>
+<body>
+  <!-- Menu Lateral -->
+  <button class="menu-toggle">☰</button>
+  <div class="sidebar-overlay"></div>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>📋 Menu</h2>
+      <button class="close-sidebar">×</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="menu-category">
+        <div class="category-header">
+          <span>👥</span>
+          <span>Para Funcionários</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="calculadora.html">
+              <span class="menu-icon">💰</span>
+              <span>Calculadora de Férias</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="investimentos.html">
+              <span class="menu-icon">📚</span>
+              <span>Educação Financeira</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="menu-category">
+        <div class="category-header">
+          <span>🏢</span>
+          <span>Para Empresa</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="captacao.html">
+              <span class="menu-icon">📈</span>
+              <span>Captação de Recursos</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="reducao-custos.html">
+              <span class="menu-icon">💡</span>
+              <span>Sugestões de Economia</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Botão Voltar -->
+  <a href="index.html" class="back-button">
+    <span>←</span>
+    <span>Voltar</span>
+  </a>
+
+  <header>
+    <h1>📚 Educação Financeira</h1>
+    <p>Aprenda sobre investimentos e construa seu futuro financeiro</p>
+  </header>
+
+  <main>
+    <div class="container">
+      
+      <!-- Visão Geral -->
+      <section class="intro-section">
+        <h2>💰 Por Que Investir?</h2>
+        <p>Investir é fazer seu dinheiro trabalhar para você. Em vez de deixar o dinheiro parado na conta corrente perdendo valor para a inflação, você pode aplicá-lo em diferentes tipos de investimentos que geram rendimentos ao longo do tempo.</p>
+        
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <span class="benefit-icon">📈</span>
+            <h3>Crescimento Patrimonial</h3>
+            <p>Seu dinheiro cresce com o tempo através de juros compostos</p>
+          </div>
+          <div class="benefit-card">
+            <span class="benefit-icon">🛡️</span>
+            <h3>Proteção contra Inflação</h3>
+            <p>Investimentos rendem acima da inflação, preservando seu poder de compra</p>
+          </div>
+          <div class="benefit-card">
+            <span class="benefit-icon">🎯</span>
+            <h3>Realização de Objetivos</h3>
+            <p>Conquiste sonhos como casa própria, viagens e aposentadoria</p>
+          </div>
+          <div class="benefit-card">
+            <span class="benefit-icon">💼</span>
+            <h3>Independência Financeira</h3>
+            <p>Construa uma fonte de renda passiva para o futuro</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Conceitos Básicos -->
+      <section class="concepts-section">
+        <h2>🎓 Conceitos Fundamentais</h2>
+        
+        <div class="concept-card">
+          <h3>O que é Investir?</h3>
+          <p>Investir é aplicar seu dinheiro em ativos financeiros com o objetivo de obter retorno no futuro. Diferente de gastar, quando você investe, espera receber de volta o valor aplicado mais um ganho adicional (rendimento).</p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Renda Fixa vs Renda Variável</h3>
+          <div class="comparison">
+            <div class="comparison-item">
+              <h4>📊 Renda Fixa</h4>
+              <ul>
+                <li>Rentabilidade previsível</li>
+                <li>Menor risco</li>
+                <li>Exemplos: Tesouro Direto, CDB, LCI/LCA</li>
+                <li>Ideal para iniciantes e reserva de emergência</li>
+              </ul>
+            </div>
+            <div class="comparison-item">
+              <h4>📈 Renda Variável</h4>
+              <ul>
+                <li>Rentabilidade imprevisível</li>
+                <li>Maior risco e potencial de ganho</li>
+                <li>Exemplos: Ações, Fundos Imobiliários, ETFs</li>
+                <li>Ideal para objetivos de longo prazo</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>Juros Compostos - O Poder do Tempo</h3>
+          <p>Os juros compostos são "juros sobre juros". Quanto mais tempo seu dinheiro fica investido, mais ele cresce de forma exponencial.</p>
+          <div class="example-box">
+            <h4>Exemplo Prático:</h4>
+            <p><strong>Investimento inicial:</strong> R$ 1.000,00</p>
+            <p><strong>Rendimento:</strong> 1% ao mês</p>
+            <ul>
+              <li>Após 1 ano: R$ 1.126,83</li>
+              <li>Após 5 anos: R$ 1.816,70</li>
+              <li>Após 10 anos: R$ 3.300,39</li>
+              <li>Após 20 anos: R$ 10.892,55</li>
+            </ul>
+            <p class="highlight">Seu dinheiro multiplicou por quase 11 vezes!</p>
+          </div>
+        </div>
+
+        <div class="concept-card">
+          <h3>Diversificação - Não Coloque Todos os Ovos na Mesma Cesta</h3>
+          <p>Diversificar significa distribuir seus investimentos em diferentes tipos de ativos. Isso reduz o risco, pois se um investimento não vai bem, outros podem compensar.</p>
+          <div class="diversification-example">
+            <div class="portfolio-item">
+              <span class="percentage">40%</span>
+              <span>Renda Fixa</span>
+            </div>
+            <div class="portfolio-item">
+              <span class="percentage">30%</span>
+              <span>Ações</span>
+            </div>
+            <div class="portfolio-item">
+              <span class="percentage">20%</span>
+              <span>Fundos Imobiliários</span>
+            </div>
+            <div class="portfolio-item">
+              <span class="percentage">10%</span>
+              <span>Reserva de Emergência</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dividendos -->
+      <section class="dividends-section">
+        <h2>💵 Entendendo Dividendos</h2>
+        
+        <div class="dividend-intro">
+          <h3>O que são Dividendos?</h3>
+          <p>Dividendos são uma parte do lucro que as empresas distribuem aos seus acionistas. Quando você compra ações de uma empresa, você se torna sócio dela e tem direito a receber uma parcela dos lucros.</p>
+        </div>
+
+        <div class="how-it-works">
+          <h3>Como Funcionam os Dividendos?</h3>
+          <div class="steps-grid">
+            <div class="step-card">
+              <span class="step-number">1</span>
+              <h4>Empresa Lucra</h4>
+              <p>A empresa fecha o trimestre ou ano com lucro</p>
+            </div>
+            <div class="step-card">
+              <span class="step-number">2</span>
+              <h4>Decisão de Distribuição</h4>
+              <p>O conselho decide distribuir parte do lucro aos acionistas</p>
+            </div>
+            <div class="step-card">
+              <span class="step-number">3</span>
+              <h4>Anúncio</h4>
+              <p>A empresa anuncia o valor e a data de pagamento</p>
+            </div>
+            <div class="step-card">
+              <span class="step-number">4</span>
+              <h4>Pagamento</h4>
+              <p>O dinheiro cai na sua conta automaticamente</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dividend-types">
+          <h3>Tipos de Proventos</h3>
+          <div class="types-grid">
+            <div class="type-card">
+              <h4>💰 Dividendos</h4>
+              <p>Distribuição de lucros em dinheiro. Isentos de Imposto de Renda para pessoa física.</p>
+            </div>
+            <div class="type-card">
+              <h4>📊 Juros sobre Capital Próprio (JCP)</h4>
+              <p>Similar aos dividendos, mas com desconto de 15% de IR na fonte.</p>
+            </div>
+            <div class="type-card">
+              <h4>🎁 Bonificação</h4>
+              <p>Distribuição de novas ações gratuitamente aos acionistas.</p>
+            </div>
+            <div class="type-card">
+              <h4>🔄 Direito de Subscrição</h4>
+              <p>Direito de comprar novas ações antes de outros investidores.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dividend-example">
+          <h3>Exemplo Prático de Dividendos</h3>
+          <div class="example-content">
+            <p><strong>Situação:</strong> Você possui 100 ações da empresa XYZ que custaram R$ 20,00 cada.</p>
+            <p><strong>Investimento total:</strong> R$ 2.000,00</p>
+            <p><strong>A empresa anuncia:</strong> Dividendo de R$ 0,50 por ação</p>
+            <p><strong>Você receberá:</strong> 100 ações × R$ 0,50 = R$ 50,00</p>
+            <p><strong>Dividend Yield:</strong> (R$ 0,50 ÷ R$ 20,00) × 100 = 2,5%</p>
+            <div class="highlight-box">
+              <p>Se a empresa pagar dividendos trimestralmente com esse valor, você receberia R$ 200,00 por ano, o que representa 10% de retorno sobre seu investimento inicial!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dividend-strategy">
+          <h3>Estratégia de Investimento em Dividendos</h3>
+          <div class="strategy-cards">
+            <div class="strategy-card">
+              <h4>🎯 Renda Passiva</h4>
+              <p>Construa uma carteira de ações que pagam bons dividendos regularmente para gerar renda mensal.</p>
+            </div>
+            <div class="strategy-card">
+              <h4>🔄 Reinvestimento</h4>
+              <p>Use os dividendos recebidos para comprar mais ações, acelerando o crescimento do patrimônio.</p>
+            </div>
+            <div class="strategy-card">
+              <h4>📊 Dividend Yield</h4>
+              <p>Busque empresas com histórico consistente de pagamento e bom dividend yield (acima de 5% ao ano).</p>
+            </div>
+            <div class="strategy-card">
+              <h4>⏰ Longo Prazo</h4>
+              <p>Mantenha as ações por anos para aproveitar o efeito dos juros compostos nos dividendos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dividend-tips">
+          <h3>⚠️ Pontos Importantes sobre Dividendos</h3>
+          <ul>
+            <li><strong>Não é garantido:</strong> Empresas podem reduzir ou suspender dividendos em momentos de crise</li>
+            <li><strong>Data Com:</strong> Você precisa ter as ações antes da "data com" para receber os dividendos</li>
+            <li><strong>Isenção de IR:</strong> Dividendos são isentos de Imposto de Renda no Brasil</li>
+            <li><strong>Análise fundamental:</strong> Não invista apenas pelo dividend yield alto, analise a saúde da empresa</li>
+            <li><strong>Setores tradicionais:</strong> Bancos, energia elétrica e saneamento costumam pagar bons dividendos</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Primeiros Passos -->
+      <section class="getting-started">
+        <h2>🚀 Como Começar a Investir</h2>
+        
+        <div class="steps-list">
+          <div class="step-item">
+            <span class="step-icon">1️⃣</span>
+            <div class="step-content">
+              <h3>Organize suas Finanças</h3>
+              <p>Quite dívidas caras (cartão de crédito, cheque especial) e crie uma reserva de emergência de 6 meses de despesas.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-icon">2️⃣</span>
+            <div class="step-content">
+              <h3>Defina seus Objetivos</h3>
+              <p>Estabeleça metas claras: curto prazo (até 1 ano), médio prazo (1-5 anos) e longo prazo (acima de 5 anos).</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-icon">3️⃣</span>
+            <div class="step-content">
+              <h3>Conheça seu Perfil de Investidor</h3>
+              <p>Conservador, moderado ou arrojado? Isso define quais investimentos são adequados para você.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-icon">4️⃣</span>
+            <div class="step-content">
+              <h3>Abra Conta em uma Corretora</h3>
+              <p>Escolha uma corretora confiável, de preferência sem taxa de corretagem para começar.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-icon">5️⃣</span>
+            <div class="step-content">
+              <h3>Comece Pequeno</h3>
+              <p>Inicie com valores baixos em renda fixa (Tesouro Direto) para ganhar experiência.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-icon">6️⃣</span>
+            <div class="step-content">
+              <h3>Estude Continuamente</h3>
+              <p>Leia livros, assista vídeos e acompanhe o mercado. Conhecimento é fundamental.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recursos Adicionais -->
+      <section class="resources-section">
+        <h2>📖 Recursos para Aprender Mais</h2>
+        
+        <div class="resources-grid">
+          <div class="resource-card">
+            <h3>📚 Livros Recomendados</h3>
+            <ul>
+              <li>"Pai Rico, Pai Pobre" - Robert Kiyosaki</li>
+              <li>"O Homem Mais Rico da Babilônia" - George S. Clason</li>
+              <li>"Investimentos Inteligentes" - Gustavo Cerbasi</li>
+              <li>"O Investidor Inteligente" - Benjamin Graham</li>
+            </ul>
+          </div>
+
+          <div class="resource-card">
+            <h3>🌐 Sites Úteis</h3>
+            <ul>
+              <li>B3 (Bolsa de Valores Brasileira)</li>
+              <li>Tesouro Direto</li>
+              <li>CVM (Comissão de Valores Mobiliários)</li>
+              <li>Investidor10 (análise de ações)</li>
+            </ul>
+          </div>
+
+          <div class="resource-card">
+            <h3>🎓 Cursos Gratuitos</h3>
+            <ul>
+              <li>B3 Educação</li>
+              <li>CVM Educacional</li>
+              <li>Tesouro Direto - Como Investir</li>
+              <li>Anbima - Educação Financeira</li>
+            </ul>
+          </div>
+
+          <div class="resource-card">
+            <h3>⚠️ Cuidados Importantes</h3>
+            <ul>
+              <li>Desconfie de promessas de retorno garantido</li>
+              <li>Não invista em pirâmides financeiras</li>
+              <li>Verifique se a empresa é regulamentada</li>
+              <li>Nunca invista em algo que não entende</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Sistema de Gestão de Férias</p>
+    <p><strong>Aviso:</strong> Este conteúdo é apenas educacional. Consulte um profissional certificado antes de investir.</p>
+  </footer>
+  <script src="menu-global.js"></script>
+</body>
+</html>
