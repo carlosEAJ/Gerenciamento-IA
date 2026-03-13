@@ -1,48 +1,5 @@
-# Dependências
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Build
-dist/
-build/
-
-# Logs
-logs/
-*.log
-
-# Ambiente
+data/*.db
 .env
-.env.local
-.env.*.local
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Sistema Operacional
+*.log
 .DS_Store
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Temporários
-*.tmp
-*.temp
-
-# Testes
-coverage/
-.nyc_output/
-
-# Cache
-.cache/
-.parcel-cache/
-.eslintcache
-
-# Outros
-*.bak
-*.orig

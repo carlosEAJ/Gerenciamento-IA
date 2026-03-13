@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Calculadora de Férias SaaS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 24px; }
+    .user-info { display: flex; gap: 20px; align-items: center; }
+    .plan-badge { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .logout { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 20px; border-radius: 5px; cursor: pointer; }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .card h2 { margin-bottom: 20px; color: #333; }
+    .input-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; color: #333; font-weight: 500; }
+    input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+    button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #5568d3; }
+    .result { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-top: 20px; display: none; }
+    .result-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ddd; }
+    .result-item:last-child { border-bottom: none; font-weight: bold; font-size: 18px; color: #27ae60; }
+    .usage { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    .usage-bar { background: #ddd; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+    .usage-fill { background: #667eea; height: 100%; transition: width 0.3s; }
+    .plan-info { font-size: 14px; color: #666; margin-top: 10px; }
+    .upgrade-btn { background: #f39c12; }
+    .upgrade-btn:hover { background: #e67e22; }
+    .history { margin-top: 20px; }
+    .history-item { padding: 10px; border-bottom: 1px solid #eee; font-size: 14px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>💼 Calculadora de Férias SaaS</h1>
+    <div class="user-info">
+      <span id="userName"></span>
+      <span class="plan-badge" id="userPlan"></span>
+      <button class="logout" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="usage" id="usageCard">
+      <strong>Uso do Plano</strong>
+      <div id="usageText"></div>
+      <div class="usage-bar">
+        <div class="usage-fill" id="usageFill"></div>
+      </div>
+      <div class="plan-info" id="planInfo"></div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Calcular Férias</h2>
+        <form id="calcForm">
+          <div class="input-group">
+            <label>Salário Bruto (R$)</label>
+            <input type="number" id="salario" step="0.01" required>
+          </div>
+          <div class="input-group">
+            <label>Dias de Férias (1-30)</label>
+            <input type="number" id="dias" min="1" max="30" required>
+          </div>
+          <button type="submit">Calcular</button>
+        </form>
+
+        <div class="result" id="result">
+          <div class="result-item">
+            <span>Valor das Férias:</span>
+            <span id="valorFerias"></span>
+          </div>
+          <div class="result-item">
+            <span>Adicional 1/3:</span>
+            <span id="adicional"></span>
+          </div>
+          <div class="result-item">
+            <span>Total Bruto:</span>
+            <span id="totalBruto"></span>
+          </div>
+          <div class="result-item">
+            <span>INSS:</span>
+            <span id="inss"></span>
+          </div>
+          <div class="result-item">
+            <span>IRRF:</span>
+            <span id="irrf"></span>
+          </div>
+          <div class="result-item">
+            <span>TOTAL LÍQUIDO:</span>
+            <span id="totalLiquido"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Planos Disponíveis</h2>
+        <div id="plansContainer"></div>
+      </div>
+    </div>
+
+    <div class="card history">
+      <h2>Histórico de Cálculos</h2>
+      <div id="historyContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (!token) {
+      window.location.href = '/login.html';
+    }
+
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userPlan').textContent = user.plan.toUpperCase();
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = '/login.html';
+    }
+
+    async function loadStatus() {
+      const res = await fetch('/api/plans/status', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      
+      const percent = data.uso.percentual || 0;
+      document.getElementById('usageText').textContent = 
+        `${data.uso.calculosUsados} de ${data.uso.limite} cálculos usados este mês`;
+      document.getElementById('usageFill').style.width = percent + '%';
+      document.getElementById('planInfo').textContent = 
+        `Plano ${data.plano.name} - R$ ${data.plano.price}/mês`;
+    }
+
+    async function loadPlans() {
+      const res = await fetch('/api/plans');
+      const plans = await res.json();
+      
+      const container = document.getElementById('plansContainer');
+      container.innerHTML = Object.entries(plans).map(([key, plan]) => `
+        <div style="padding: 15px; border: 2px solid ${user.plan === key ? '#667eea' : '#ddd'}; border-radius: 5px; margin-bottom: 10px;">
+          <strong>${plan.name}</strong> - R$ ${plan.price}/mês<br>
+          <small>${plan.features.join(', ')}</small><br>
+          ${user.plan !== key ? `<button class="upgrade-btn" onclick="upgradePlan('${key}')" style="margin-top: 10px; font-size: 12px; padding: 8px;">Mudar para ${plan.name}</button>` : '<span style="color: #27ae60;">✓ Plano Atual</span>'}
+        </div>
+      `).join('');
+    }
+
+    async function upgradePlan(plan) {
+      if (!confirm(`Deseja mudar para o plano ${plan}?`)) return;
+      
+      const res = await fetch('/api/plans/upgrade', {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ plan })
+      });
+
+      if (res.ok) {
+        alert('Plano atualizado! Faça login novamente.');
+        logout();
+      } else {
+        const data = await res.json();
+        alert(data.erro);
+      }
+    }
+
+    async function loadHistory() {
+      const res = await fetch('/api/calculations/historico', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const history = await res.json();
+      
+      const container = document.getElementById('historyContainer');
+      if (history.length === 0) {
+        container.innerHTML = '<p style="color: #999;">Nenhum cálculo realizado ainda</p>';
+      } else {
+        container.innerHTML = history.map(h => `
+          <div class="history-item">
+            ${new Date(h.created_at).toLocaleString('pt-BR')} - 
+            Salário: R$ ${h.salario_bruto} - 
+            ${h.dias_ferias} dias - 
+            Líquido: R$ ${h.total_liquido.toFixed(2)} - 
+            Por: ${h.user_name}
+          </div>
+        `).join('');
+      }
+    }
+
+    document.getElementById('calcForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const salarioBruto = document.getElementById('salario').value;
+      const diasFerias = document.getElementById('dias').value;
+
+      const res = await fetch('/api/calculations', {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ salarioBruto, diasFerias })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        document.getElementById('valorFerias').textContent = 'R$ ' + data.valorFerias;
+        document.getElementById('adicional').textContent = 'R$ ' + data.adicionalTerco;
+        document.getElementById('totalBruto').textContent = 'R$ ' + data.totalBruto;
+        document.getElementById('inss').textContent = 'R$ ' + data.inss;
+        document.getElementById('irrf').textContent = 'R$ ' + data.irrf;
+        document.getElementById('totalLiquido').textContent = 'R$ ' + data.totalLiquido;
+        document.getElementById('result').style.display = 'block';
+        
+        loadStatus();
+        loadHistory();
+      } else {
+        alert(data.erro);
+      }
+    });
+
+    loadStatus();
+    loadPlans();
+    loadHistory();
+  </script>
+</body>
+</html>
