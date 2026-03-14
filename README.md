@@ -104,6 +104,11 @@ http://localhost:3000
 - Node.js
 - Express
 - PostgreSQL
+- JWT (JSON Web Token)
+- Bcryptjs (Criptografia)
+- Multer (Upload de Arquivos)
+- SheetJS / XLSX (Leitura de Planilhas)
+- Chart.js (Gráficos Interativos)
 - HTML5
 - CSS3 (Flexbox)
 - JavaScript (ES6+)
