@@ -8,6 +8,7 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 ![SQLite](https://img.shields.io/badge/SQLite-07405E?logo=sqlite&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?logo=JSON%20web%20tokens)
 
 **Sistema de Gestão de Férias - Plataforma SaaS**
@@ -44,6 +45,12 @@ Sistema completo para cálculo de férias com suporte a multi-tenancy (múltipla
 - **Integração Contínua (CI/CD)**: Pipeline configurado no GitHub Actions para validação automatizada.
 - **Central de Ajuda Integrada**: Páginas separadas de FAQ focadas na experiência do Administrador/RH e do Colaborador.
 - **Nova Página Inicial**: Design moderno com cartões informativos e demonstrativo dos planos de assinatura.
+
+## 🗄️ Migração para PostgreSQL
+
+Com a evolução do sistema para uma arquitetura SaaS completa, o banco de dados principal foi migrado de **SQLite** para **PostgreSQL**. Essa transição foi fundamental pelos seguintes motivos:
+- **Escalabilidade (Multi-tenancy)**: O PostgreSQL lida de forma superior com alto volume de acessos simultâneos, garantindo o isolamento performático e seguro dos dados de múltiplas empresas.
+- **Confiabilidade em Produção**: Oferece melhor suporte a concorrência, transações complexas (ACID) e integridade referencial, atributos essenciais para processamento de históricos financeiros, limites de planos e auditoria.
 
 ## 🚀 Como Executar
 
@@ -95,6 +102,7 @@ http://localhost:3000
 
 - Node.js
 - Express
+- PostgreSQL
 - HTML5
 - CSS3 (Flexbox)
 - JavaScript (ES6+)
