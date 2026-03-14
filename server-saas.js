@@ -36,7 +36,7 @@ app.post('/calcular-ferias', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', version: '1.01.2' });
+  res.json({ status: 'ok', version: '1.02.0' });
 });
 
 const PORT = process.env.PORT || 3000;
