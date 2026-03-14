@@ -39,6 +39,49 @@
     ← Voltar
   </a>
 
+  <!-- Menu Lateral -->
+  <button class="menu-toggle" style="position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 24px; cursor: pointer;">☰</button>
+  <div class="sidebar-overlay"></div>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>📋 Menu</h2>
+      <button class="close-sidebar">×</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="menu-category">
+        <div class="category-header"><span>👥</span><span>Para Funcionários</span></div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="calculadora.html"><span class="menu-icon">💰</span><span>Calculadora de Férias</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="investimentos.html"><span class="menu-icon">📚</span><span>Educação Financeira</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="ponto.html"><span class="menu-icon">⏱️</span><span>Bater Ponto</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="faq.html#funcionario"><span class="menu-icon">❓</span><span>Dúvidas Frequentes</span></a>
+          </li>
+        </ul>
+      </div>
+      <div class="menu-category">
+        <div class="category-header"><span>🏢</span><span>Para Empresa</span></div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="captacao.html"><span class="menu-icon">📈</span><span>Captação de Recursos</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="reducao-custos.html"><span class="menu-icon">💡</span><span>Sugestões de Economia</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="faq.html#empresa"><span class="menu-icon">❓</span><span>FAQ da Empresa</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <main>
     <div class="ponto-container">
       <div class="ponto-header">
@@ -189,5 +232,6 @@
     // Inicia processo
     loadFuncionarios();
   </script>
+  <script src="menu-global.js"></script>
 </body>
 </html>

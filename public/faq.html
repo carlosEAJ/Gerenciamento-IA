@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dúvidas Frequentes (FAQ) - Sistema de Gestão</title>
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="menu-global.css">
+  <style>
+    .faq-container { max-width: 800px; width: 100%; }
+    .faq-section { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 30px; }
+    /* Garante que, ao navegar para uma âncora (#empresa ou #funcionario), 
+       haja espaço suficiente no topo para não cortar o cabeçalho da página. */
+    #empresa, #funcionario { scroll-margin-top: 120px; }
+    .faq-section h2 { color: #667eea; font-size: 24px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    
+    details { background: #fdfdfd; border: 1px solid #eaeaea; border-radius: 8px; margin-bottom: 15px; padding: 15px 20px; transition: all 0.3s ease; }
+    details:hover { border-color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.1); }
+    details[open] { border-left: 4px solid #667eea; }
+    
+    summary { font-weight: 600; font-size: 16px; color: #444; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+    summary::-webkit-details-marker { display: none; }
+    summary:after { content: '▼'; font-size: 12px; color: #667eea; transition: transform 0.3s; }
+    details[open] summary:after { transform: rotate(180deg); }
+    
+    details p { margin-top: 15px; color: #555; line-height: 1.6; border-top: 1px solid #eee; padding-top: 15px; font-size: 15px; }
+    details ul { margin-top: 10px; padding-left: 20px; color: #555; line-height: 1.6; font-size: 15px; }
+    details li { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <!-- Menu Lateral -->
+  <button class="menu-toggle">☰</button>
+  <div class="sidebar-overlay"></div>
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2>📋 Menu</h2>
+      <button class="close-sidebar">×</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="menu-category">
+        <div class="category-header">
+          <span>👥</span>
+          <span>Para Funcionários</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="calculadora.html">
+              <span class="menu-icon">💰</span>
+              <span>Calculadora de Férias</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="investimentos.html">
+              <span class="menu-icon">📚</span>
+              <span>Educação Financeira</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="ponto.html">
+              <span class="menu-icon">⏱️</span>
+              <span>Bater Ponto</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="faq.html#funcionario">
+              <span class="menu-icon">❓</span>
+              <span>Dúvidas Frequentes</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="menu-category">
+        <div class="category-header">
+          <span>🏢</span>
+          <span>Para Empresa</span>
+        </div>
+        <ul class="menu-items">
+          <li class="menu-item">
+            <a href="captacao.html"><span class="menu-icon">📈</span><span>Captação de Recursos</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="reducao-custos.html"><span class="menu-icon">💡</span><span>Sugestões de Economia</span></a>
+          </li>
+          <li class="menu-item">
+            <a href="faq.html#empresa"><span class="menu-icon">❓</span><span>FAQ da Empresa</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Botão Voltar -->
+  <a href="index.html" class="back-button">
+    <span>←</span>
+    <span>Voltar</span>
+  </a>
+
+  <header>
+    <div class="header-content">
+      <h1>❓ Central de Ajuda</h1>
+      <p>Encontre respostas rápidas para as dúvidas mais comuns da plataforma.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="faq-container">
+    <!-- FAQ DA EMPRESA -->
+    <section id="empresa" class="faq-section">
+      <h2>🏢 FAQ da Empresa (Admin / RH)</h2>
+      
+      <details>
+        <summary>Como faço para adicionar novos funcionários na plataforma?</summary>
+        <p>Se você possui o perfil de <strong>Admin</strong> ou <strong>RH</strong>, basta clicar no seu nome no canto superior direito da tela inicial (Home) e selecionar a opção <strong>"➕ Adicionar Funcionário"</strong> no menu suspenso. Preencha os dados como Nome, CPF, Cargo, Setor e Salário para registrar a pessoa na sua base.</p>
+      </details>
+
+      <details>
+        <summary>O que acontece quando o limite do meu Plano de Assinatura acaba?</summary>
+        <p>Cada plano (Trial, Free, Pro) possui uma cota mensal de operações (cálculos de férias, etc). Quando você atinge esse limite, o sistema bloqueará novos processamentos e exibirá um aviso. Você pode aguardar a virada do mês para renovar a cota ou fazer um <strong>Upgrade de Plano</strong> para continuar utilizando sem interrupções.</p>
+      </details>
+
+      <details>
+        <summary>Como funciona o isolamento de dados da minha empresa?</summary>
+        <p>A plataforma utiliza uma arquitetura SaaS Multi-tenancy segura. Todos os funcionários, cálculos e pontos registrados estão criptografados e associados exclusivamente ao <strong>CNPJ / ID da sua Empresa</strong>. Nenhuma outra empresa cadastrada no sistema tem acesso às suas informações.</p>
+      </details>
+
+      <details>
+        <summary>Como o RH consegue ver o Histórico de Férias?</summary>
+        <p>No seu painel corporativo, todos os cálculos realizados ficam salvos automaticamente na nuvem. Você pode visualizá-los, conferir os descontos aplicados (INSS/IRRF) e alterar o status (ex: "Calculado" para "Aprovado") através das rotas de Histórico ou do Dashboard Administrativo.</p>
+      </details>
+    </section>
+
+    <!-- FAQ DO FUNCIONÁRIO -->
+    <section id="funcionario" class="faq-section">
+      <h2>👥 FAQ do Funcionário</h2>
+      
+      <details>
+        <summary>Como é feito o cálculo do valor das minhas férias?</summary>
+        <p>A plataforma calcula o valor de forma totalmente transparente seguindo as leis brasileiras vigentes. O fluxo obedece a seguinte ordem:
+        <ul>
+          <li><strong>Férias proporcionais:</strong> Seu salário base é dividido por 30 e multiplicado pelos dias solicitados.</li>
+          <li><strong>Adicional Constitucional:</strong> Soma-se 1/3 (um terço) ao valor anterior.</li>
+          <li><strong>Descontos:</strong> Sobre o valor Bruto, aplicamos a tabela progressiva oficial do <strong>INSS</strong> e, em seguida, a dedução do Imposto de Renda (<strong>IRRF</strong>).</li>
+        </ul>
+        O resultado final exibido será exatamente o Líquido que deverá cair em sua conta.</p>
+      </details>
+
+      <details>
+        <summary>Como utilizar corretamente o Relógio de Ponto?</summary>
+        <p>Acesse a opção <strong>"Bater Ponto"</strong> na tela inicial. Na tela do relógio:
+        <ol>
+          <li>Selecione o seu nome na lista (caso seu nome não apareça, avise o seu RH para que ele te cadastre).</li>
+          <li>Clique no botão correspondente à sua ação no momento (🟢 Entrada, 🟠 Pausa Almoço, 🔵 Retorno, 🔴 Saída Final).</li>
+          <li>O sistema irá carregar um registro inviolável com a hora do servidor e exibirá na tabela logo abaixo.</li>
+        </ol></p>
+      </details>
+
+      <details>
+        <summary>Para que serve a aba "Educação Financeira"?</summary>
+        <p>Essa seção é um bônus gratuito da plataforma! Entendemos que receber o valor das Férias ou do 13º salário é um ótimo momento para pensar no futuro. Lá, explicamos como funcionam investimentos, Renda Fixa, Renda Variável e os famosos Dividendos de maneira muito acessível.</p>
+      </details>
+
+      <details>
+        <summary>Meus dados pessoais (como CPF e Salário) estão seguros?</summary>
+        <p>Sim. A plataforma utiliza autenticação avançada via JWT (JSON Web Tokens) e comunicação criptografada. Apenas você e o departamento de Recursos Humanos da sua respectiva empresa possuem acesso ao seu salário e ao histórico de atividades laborais cadastradas no sistema.</p>
+      </details>
+    </section>
+    </div>
+  </main>
+  <script src="menu-global.js"></script>
+</body>
+</html>
