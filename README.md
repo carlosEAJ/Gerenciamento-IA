@@ -27,6 +27,7 @@ Sistema completo para cálculo de férias com suporte a multi-tenancy (múltipla
 - **Módulo SaaS (Administrativo)**:
   - Multi-tenancy: Cada empresa tem seus dados isolados.
   - Autenticação JWT e senhas criptografadas.
+  - **Gestão de Usuários (RBAC)**: O administrador da conta pode convidar e gerenciar múltiplos usuários (ex: RH, Financeiro), definindo perfis de acesso para cada um.
   - Gestão de Planos de Assinatura (Free, Pro, Enterprise) com limites mensais.
   - Controle de Funcionários e Histórico de Cálculos salvo no Banco de Dados.
 - **Módulo de Ponto Eletrônico**: Registro de jornada (Entrada, Pausas e Saída) com histórico em tempo real.

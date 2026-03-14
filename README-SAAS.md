@@ -151,8 +151,8 @@ Fazer upgrade de plano (requer autenticação e role admin)
 - [ ] Testes automatizados
 
 ### Funcionalidades Avançadas
-- [ ] Multi-usuários por empresa
-- [ ] Permissões granulares (RBAC)
+- [x] Multi-usuários por empresa
+- [x] Permissões granulares (RBAC)
 - [ ] Webhooks para integrações
 - [ ] Exportação de relatórios (PDF/Excel)
 - [ ] Dashboard de analytics

@@ -15,6 +15,7 @@ const calculationsRoutes = require('./src/routes/calculations');
 const plansRoutes = require('./src/routes/plans');
 const pontoRoutes = require('./src/routes/ponto');
 const funcionariosRoutes = require('./src/routes/funcionarios');
+const usuariosRoutes = require('./src/routes/usuarios');
 ```
 
 - **express**: Framework web para Node.js
@@ -265,3 +266,63 @@ app.listen(PORT, () => {
 - [ ] Criar endpoint para consulta de tabelas (INSS/IRRF)
 - [ ] Adicionar suporte a dependentes (dedução IRRF)
 - [ ] Implementar cache de cálculos
+
+## 👨‍👩‍👧‍👦 Gestão de Usuários (RBAC)
+
+Com a implementação do módulo de múltiplos usuários, foram adicionados os seguintes endpoints, todos protegidos por autenticação e, na maioria dos casos, restritos a usuários com perfil `Admin`.
+
+### POST /api/usuarios
+
+**Descrição**: Cria um novo usuário (sub-conta) vinculado à empresa do administrador logado.
+
+**Acesso**: `Admin`
+
+#### Parâmetros de Entrada
+
+```json
+{
+  "nome": "Analista RH",
+  "email": "rh@empresa.com",
+  "password": "senhaSegura456",
+  "perfil": "RH"
+}
+```
+
+| Parâmetro | Tipo | Descrição |
+|-----------|------|-----------|
+| nome | String | Nome completo do novo usuário. |
+| email | String | Email único para login do novo usuário. |
+| password | String | Senha de acesso. |
+| perfil | String | Perfil de permissão. Valores válidos: `Admin`, `RH`, `Financeiro`, `Colaborador`. |
+
+#### Resposta de Sucesso (201)
+
+```json
+{
+  "mensagem": "Usuário criado com sucesso!",
+  "usuario": {
+    "id": 12,
+    "nome": "Analista RH",
+    "email": "rh@empresa.com",
+    "perfil": "RH"
+  }
+}
+```
+
+### GET /api/usuarios
+
+**Descrição**: Lista todos os usuários ativos vinculados à empresa do administrador.
+
+**Acesso**: `Admin`
+
+#### Resposta de Sucesso (200)
+
+Retorna um array de objetos de usuário.
+
+### DELETE /api/usuarios/:id
+
+**Descrição**: Desativa um usuário, impedindo seu acesso ao sistema. O usuário não é removido do banco, apenas marcado como inativo.
+
+**Acesso**: `Admin`
+
+**Parâmetro de URL**: `id` do usuário a ser desativado.
