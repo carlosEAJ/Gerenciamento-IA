@@ -58,10 +58,12 @@ function calcularFerias(salarioBase, diasSolicitados) {
 // Calcular férias para um funcionário
 router.post('/', auth, checkTrialValido, async (req, res) => {
   const { usuarioId, empresaId, planoAtivo } = req.user;
-  const { funcionarioId, diasSolicitados, dataInicioFerias, dataFimFerias, observacoes } = req.body;
+  const { funcionarioId, dataInicioFerias, dataFimFerias, observacoes } = req.body;
+  const diasSolicitados = req.body.diasSolicitados || req.body.diasFerias;
+  const salarioBruto = req.body.salarioBruto;
 
-  if (!funcionarioId || !diasSolicitados || diasSolicitados < 1 || diasSolicitados > 30) {
-    return res.status(400).json({ erro: 'Dados inválidos' });
+  if (!diasSolicitados || diasSolicitados < 1 || diasSolicitados > 30 || (!funcionarioId && !salarioBruto)) {
+    return res.status(400).json({ erro: 'Dados inválidos. Informe funcionarioId ou salarioBruto, e os dias solicitados.' });
   }
 
   // Verificar limite do plano
@@ -87,18 +89,21 @@ router.post('/', auth, checkTrialValido, async (req, res) => {
       });
     }
 
-    const funcResult = await db.query(
-      'SELECT * FROM funcionarios WHERE id = $1 AND empresa_id = $2 AND ativo = true',
-      [funcionarioId, empresaId]
-    );
-    
-    const funcionario = funcResult.rows[0];
-    if (!funcionario) {
-      return res.status(404).json({ erro: 'Funcionário não encontrado ou inativo' });
+    let salarioBaseCalculo = parseFloat(salarioBruto);
+    let funcData = null;
+
+    if (funcionarioId) {
+      const funcResult = await db.query(
+        'SELECT * FROM funcionarios WHERE id = $1 AND empresa_id = $2 AND ativo = true',
+        [funcionarioId, empresaId]
+      );
+      funcData = funcResult.rows[0];
+      if (!funcData) return res.status(404).json({ erro: 'Funcionário não encontrado ou inativo' });
+      salarioBaseCalculo = parseFloat(funcData.salario_base);
     }
 
     // Realizar cálculo
-    const calculo = calcularFerias(funcionario.salario_base, diasSolicitados);
+    const calculo = calcularFerias(salarioBaseCalculo, diasSolicitados);
 
     // Salvar no histórico
     const insertResult = await db.query(
@@ -108,8 +113,8 @@ router.post('/', auth, checkTrialValido, async (req, res) => {
         inss, irrf, liquido, data_inicio_ferias, data_fim_ferias, observacoes
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`,
       [
-        funcionarioId, empresaId, usuarioId, diasSolicitados,
-        funcionario.salario_base, calculo.valorFerias, calculo.adicionalTerco,
+        funcionarioId || null, empresaId, usuarioId, diasSolicitados,
+        salarioBaseCalculo, calculo.valorFerias, calculo.adicionalTerco,
         calculo.valorBruto, calculo.inss, calculo.irrf, calculo.liquido,
         dataInicioFerias || null, dataFimFerias || null, observacoes || null
       ]
@@ -117,12 +122,12 @@ router.post('/', auth, checkTrialValido, async (req, res) => {
 
     res.json({
       calculoId: insertResult.rows[0].id,
-      funcionario: {
-        id: funcionario.id,
-        nome: funcionario.nome,
-        cpf: funcionario.cpf,
-        salarioBase: funcionario.salario_base
-      },
+      funcionario: funcData ? {
+        id: funcData.id,
+        nome: funcData.nome,
+        cpf: funcData.cpf,
+        salarioBase: funcData.salario_base
+      } : null,
       diasSolicitados,
       ...calculo,
       uso: {
@@ -148,7 +153,7 @@ router.get('/historico', auth, checkTrialValido, async (req, res) => {
       f.cpf as funcionario_cpf,
       u.nome as usuario_nome
     FROM historico_ferias h
-    JOIN funcionarios f ON h.funcionario_id = f.id
+    LEFT JOIN funcionarios f ON h.funcionario_id = f.id
     JOIN usuarios u ON h.usuario_solicitante_id = u.id
   WHERE h.empresa_id = $1
   `;
@@ -190,7 +195,7 @@ router.get('/:id', auth, checkTrialValido, async (req, res) => {
         f.cpf as funcionario_cpf,
         u.nome as usuario_nome
       FROM historico_ferias h
-      JOIN funcionarios f ON h.funcionario_id = f.id
+      LEFT JOIN funcionarios f ON h.funcionario_id = f.id
       JOIN usuarios u ON h.usuario_solicitante_id = u.id
       WHERE h.id = $1 AND h.empresa_id = $2`,
       [id, empresaId]

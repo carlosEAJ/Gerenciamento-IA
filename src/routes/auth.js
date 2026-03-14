@@ -8,10 +8,17 @@ const router = express.Router();
 
 // Registro de empresa + usuário admin
 router.post('/register', async (req, res) => {
-  const { razaoSocial, cnpj, email, nome, senha } = req.body;
+  // Mapeia os dados aceitando possíveis variações de nome que o frontend pode estar enviando
+  const razaoSocial = req.body.razaoSocial || req.body.razao_social || req.body.companyName;
+  const cnpj = req.body.cnpj || req.body.documento;
+  const email = req.body.email;
+  const nome = req.body.nome || req.body.name || req.body.responsavel;
+  const senha = req.body.senha || req.body.password;
+
+  console.log('📥 Tentativa de registro. Dados recebidos do frontend:', req.body);
 
   if (!razaoSocial || !cnpj || !email || !nome || !senha) {
-    return res.status(400).json({ erro: 'Dados incompletos' });
+    return res.status(400).json({ erro: 'Dados incompletos. Verifique o terminal para ver o que faltou.' });
   }
 
   // Validar CNPJ (formato básico)
@@ -57,7 +64,8 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
-  const { email, senha } = req.body;
+  const email = req.body.email;
+  const senha = req.body.senha || req.body.password;
 
   try {
     const result = await db.query(

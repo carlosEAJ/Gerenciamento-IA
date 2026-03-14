@@ -9,6 +9,8 @@ require('./src/config/database');
 const authRoutes = require('./src/routes/auth');
 const calculationsRoutes = require('./src/routes/calculations');
 const plansRoutes = require('./src/routes/plans');
+const pontoRoutes = require('./src/routes/ponto');
+const funcionariosRoutes = require('./src/routes/funcionarios');
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.use(express.static('public'));
 app.use('/api/auth', authRoutes);
 app.use('/api/calculations', calculationsRoutes);
 app.use('/api/plans', plansRoutes);
+app.use('/api/ponto', pontoRoutes);
+app.use('/api/funcionarios', funcionariosRoutes);
 
 // Rota legada (compatibilidade)
 app.post('/calcular-ferias', (req, res) => {
@@ -30,7 +34,7 @@ app.post('/calcular-ferias', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', version: '2.0.0-saas' });
+  res.json({ status: 'ok', version: '1.01.2' });
 });
 
 const PORT = process.env.PORT || 3000;

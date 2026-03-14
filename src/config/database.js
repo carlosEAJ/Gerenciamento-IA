@@ -1,12 +1,37 @@
 const { Pool } = require('pg');
 
+const DB_NAME = 'saas_ferias';
+const CONNECTION_STRING = process.env.DATABASE_URL || `postgresql://postgres:postgres@localhost:5432/${DB_NAME}`;
+
+// Cria a URL de admin isolando apenas os dados de acesso e apontando para o banco 'postgres'
+const adminUrl = new URL(CONNECTION_STRING);
+adminUrl.pathname = '/postgres';
+
+// Conecta ao banco padrão 'postgres' para criar o banco se necessário
+const ensureDatabase = async () => {
+  const adminPool = new Pool({
+    connectionString: adminUrl.toString(),
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  });
+  try {
+    const res = await adminPool.query(`SELECT 1 FROM pg_database WHERE datname = $1`, [DB_NAME]);
+    if (res.rowCount === 0) {
+      await adminPool.query(`CREATE DATABASE ${DB_NAME}`);
+      console.log(`Banco de dados '${DB_NAME}' criado com sucesso.`);
+    }
+  } finally {
+    await adminPool.end();
+  }
+};
+
 const db = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/saas_ferias',
+  connectionString: CONNECTION_STRING,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 const initDB = async () => {
   try {
+    await ensureDatabase();
     // 1. EMPRESAS - O Cliente do SaaS
     await db.query(`CREATE TABLE IF NOT EXISTS empresas (
       id SERIAL PRIMARY KEY,

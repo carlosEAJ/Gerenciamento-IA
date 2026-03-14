@@ -54,6 +54,10 @@
         <input type="text" id="companyName" required>
       </div>
       <div class="input-group">
+        <label>CNPJ</label>
+        <input type="text" id="companyCnpj" placeholder="Apenas números ou com pontuação" required>
+      </div>
+      <div class="input-group">
         <label>Seu Nome</label>
         <input type="text" id="userName" required>
       </div>
@@ -96,8 +100,8 @@
 
         if (res.ok) {
           localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
-          window.location.href = '/dashboard.html';
+          localStorage.setItem('user', JSON.stringify(data.usuario));
+          window.location.href = '/index.html';
         } else {
           errorDiv.textContent = data.erro;
           errorDiv.style.display = 'block';
@@ -111,6 +115,7 @@
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const companyName = document.getElementById('companyName').value;
+      const cnpj = document.getElementById('companyCnpj').value;
       const name = document.getElementById('userName').value;
       const email = document.getElementById('registerEmail').value;
       const password = document.getElementById('registerPassword').value;
@@ -121,7 +126,7 @@
         const res = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ companyName, name, email, password })
+          body: JSON.stringify({ companyName, cnpj, name, email, password })
         });
 
         const data = await res.json();

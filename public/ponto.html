@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bater Ponto</title>
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="menu-global.css">
+  <style>
+    .ponto-container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .ponto-header { text-align: center; margin-bottom: 30px; }
+    .ponto-header h2 { color: #333; font-size: 28px; margin-bottom: 5px; }
+    .ponto-header p { color: #666; }
+    .input-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+    select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; background-color: #f9f9f9; }
+    .clock { font-size: 54px; text-align: center; margin: 20px 0; color: #667eea; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+    .btn-ponto { padding: 15px; font-size: 16px; font-weight: bold; color: white; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s, opacity 0.2s; }
+    .btn-ponto:hover { transform: scale(1.02); opacity: 0.9; }
+    .btn-entrada { background: #27ae60; }
+    .btn-pausa { background: #f39c12; }
+    .btn-retorno { background: #3498db; }
+    .btn-saida { background: #e74c3c; }
+    .history-section { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
+    .history-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    .history-table th, .history-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    .history-table th { background: #f8f9fa; color: #333; }
+    .type-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; }
+    .badge-Entrada { background: #27ae60; }
+    .badge-Pausa { background: #f39c12; }
+    .badge-Retorno { background: #3498db; }
+    .badge-Saída { background: #e74c3c; }
+  </style>
+</head>
+<body>
+  <!-- Botão Voltar -->
+  <a href="index.html" style="position: absolute; top: 1.5rem; left: 1.5rem; text-decoration: none; font-weight: bold; color: #667eea; background: white; padding: 8px 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    ← Voltar
+  </a>
+
+  <main>
+    <div class="ponto-container">
+      <div class="ponto-header">
+        <h2>⏱️ Relógio de Ponto</h2>
+        <p>Registre de forma rápida a sua jornada de trabalho.</p>
+      </div>
+
+      <div class="clock" id="clockDisplay">00:00:00</div>
+
+      <div class="input-group">
+        <label for="funcionarioSelect">Identificação do Funcionário:</label>
+        <select id="funcionarioSelect">
+          <option value="">Carregando funcionários do banco...</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-ponto btn-entrada" onclick="baterPonto('Entrada')">🟢 Entrada</button>
+        <button class="btn-ponto btn-pausa" onclick="baterPonto('Pausa')">🟠 Saída para Almoço</button>
+        <button class="btn-ponto btn-retorno" onclick="baterPonto('Retorno')">🔵 Retorno do Almoço</button>
+        <button class="btn-ponto btn-saida" onclick="baterPonto('Saída')">🔴 Saída Final</button>
+      </div>
+
+      <div class="history-section">
+        <h3>Histórico Recente</h3>
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Data e Hora</th>
+              <th>Tipo de Registro</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr><td colspan="2" style="text-align:center; color: #999;">Selecione um funcionário para visualizar seus registros</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login.html';
+    }
+
+    // Atualiza o relógio na tela a cada segundo
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clockDisplay').textContent = now.toLocaleTimeString('pt-BR');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Carrega a lista de funcionários do banco de dados
+    async function loadFuncionarios() {
+      try {
+        const res = await fetch('/api/ponto/funcionarios', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const select = document.getElementById('funcionarioSelect');
+        
+        if (res.ok) {
+          if(data.length === 0) {
+            select.innerHTML = '<option value="">Nenhum funcionário encontrado. Cadastre-os primeiro.</option>';
+            return;
+          }
+          select.innerHTML = '<option value="">-- Selecione seu nome --</option>' + 
+            data.map(f => `<option value="${f.id}">${f.nome}</option>`).join('');
+        } else {
+          alert(data.erro || 'Erro ao carregar funcionários do banco');
+        }
+      } catch (err) {
+        console.error('Erro de requisição:', err);
+      }
+    }
+
+    // Realiza a requisição ao bater o ponto
+    async function baterPonto(tipo) {
+      const funcionarioId = document.getElementById('funcionarioSelect').value;
+      if (!funcionarioId) {
+        alert('⚠️ Por favor, selecione seu nome antes de registrar o ponto.');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/ponto', {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ funcionarioId, tipo })
+        });
+        
+        const data = await res.json();
+        if (res.ok) {
+          alert(`✅ Sucesso: ${tipo} registrada!`);
+          loadHistory(funcionarioId);
+        } else {
+          alert('❌ Erro: ' + data.erro);
+        }
+      } catch (err) {
+        alert('Erro de conexão ao salvar no banco.');
+      }
+    }
+
+    // Atualiza a tabela com o histórico daquele funcionário
+    async function loadHistory(funcionarioId) {
+      if (!funcionarioId) return;
+      
+      try {
+        const res = await fetch(`/api/ponto/historico/${funcionarioId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const tbody = document.getElementById('historyBody');
+        
+        if (res.ok) {
+          if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="2" style="text-align:center; color: #999;">Nenhum registro encontrado hoje.</td></tr>';
+            return;
+          }
+          
+          tbody.innerHTML = data.map(r => {
+            const badgeClass = `badge-${r.tipo}`;
+            return `
+              <tr>
+                <td style="font-weight: 500;">${new Date(r.data_hora).toLocaleString('pt-BR')}</td>
+                <td><span class="type-badge ${badgeClass}">${r.tipo}</span></td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Ao trocar a pessoa selecionada, mostra o histórico dela
+    document.getElementById('funcionarioSelect').addEventListener('change', (e) => {
+      const funcId = e.target.value;
+      if(funcId) loadHistory(funcId);
+      else document.getElementById('historyBody').innerHTML = '<tr><td colspan="2" style="text-align:center; color: #999;">Selecione um funcionário para visualizar seus registros</td></tr>';
+    });
+
+    // Inicia processo
+    loadFuncionarios();
+  </script>
+</body>
+</html>

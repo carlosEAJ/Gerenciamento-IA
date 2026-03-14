@@ -1,147 +1,51 @@
 const express = require('express');
 const db = require('../config/database');
-const { auth, checkPerfil, checkTrialValido } = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Listar funcionários da empresa
-router.get('/', auth, checkTrialValido, async (req, res) => {
-  const { empresaId } = req.user;
+// Inicializa as novas colunas no Banco de Dados se não existirem
+const initTable = async () => {
+  try { await db.query('ALTER TABLE funcionarios ADD COLUMN documentacao TEXT').catch(() => {}); } catch (err) {}
+  try { await db.query('ALTER TABLE funcionarios ADD COLUMN cargo VARCHAR(100)').catch(() => {}); } catch (err) {}
+  try { await db.query('ALTER TABLE funcionarios ADD COLUMN setor VARCHAR(100)').catch(() => {}); } catch (err) {}
+};
+initTable();
 
-  try {
-    const result = await db.query(
-      `SELECT id, nome, cpf, salario_base, data_admissao, ativo, created_at 
-       FROM funcionarios 
-       WHERE empresa_id = $1 
-       ORDER BY nome ASC`,
-      [empresaId]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    return res.status(500).json({ erro: 'Erro ao buscar funcionários' });
-  }
-});
+// Cadastrar novo funcionário (com validação de Admin/RH)
+router.post('/', auth, async (req, res) => {
+  const { empresaId, perfil } = req.user;
+  const { nome, cpf, cargo, setor, documentacao, salarioBase } = req.body;
 
-// Buscar funcionário específico
-router.get('/:id', auth, checkTrialValido, async (req, res) => {
-  const { empresaId } = req.user;
-  const { id } = req.params;
-
-  try {
-    const result = await db.query(
-      'SELECT * FROM funcionarios WHERE id = $1 AND empresa_id = $2',
-      [id, empresaId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ erro: 'Funcionário não encontrado' });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    return res.status(500).json({ erro: 'Erro ao buscar funcionário' });
-  }
-});
-
-// Cadastrar novo funcionário (apenas Admin e RH)
-router.post('/', auth, checkTrialValido, checkPerfil('Admin', 'RH'), async (req, res) => {
-  const { empresaId } = req.user;
-  const { nome, cpf, salarioBase, dataAdmissao } = req.body;
-
-  if (!nome || !cpf || !salarioBase || !dataAdmissao) {
-    return res.status(400).json({ erro: 'Dados incompletos' });
+  if (perfil !== 'Admin' && perfil !== 'RH') {
+    return res.status(403).json({ erro: 'Acesso negado. Apenas Admin ou RH podem adicionar funcionários.' });
   }
 
-  // Validar CPF (formato básico)
-  const cpfLimpo = cpf.replace(/\D/g, '');
-  if (cpfLimpo.length !== 11) {
-    return res.status(400).json({ erro: 'CPF inválido' });
-  }
-
-  // Validar salário
-  if (salarioBase <= 0) {
-    return res.status(400).json({ erro: 'Salário deve ser maior que zero' });
+  // Validação: Garante que os novos campos também sejam preenchidos
+  if (!nome || !cpf || !cargo || !setor || !salarioBase) {
+    return res.status(400).json({ erro: 'Nome, CPF, Cargo, Setor e Salário Base são obrigatórios.' });
   }
 
   try {
     const result = await db.query(
-      'INSERT INTO funcionarios (empresa_id, nome, cpf, salario_base, data_admissao) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-      [empresaId, nome, cpfLimpo, salarioBase, dataAdmissao]
+      'INSERT INTO funcionarios (empresa_id, nome, cpf, cargo, setor, salario_base, documentacao, ativo) VALUES ($1, $2, $3, $4, $5, $6, $7, true) RETURNING id',
+      [empresaId, nome, cpf, cargo, setor, salarioBase, documentacao]
     );
-    res.status(201).json({
-      mensagem: 'Funcionário cadastrado com sucesso',
-      funcionarioId: result.rows[0].id
-    });
+    res.json({ mensagem: 'Funcionário cadastrado com sucesso!', id: result.rows[0].id });
   } catch (err) {
-    if (err.code === '23505') {
-      return res.status(400).json({ erro: 'CPF já cadastrado nesta empresa' });
+    if (err.code === '23505' || (err.message && err.message.includes('UNIQUE'))) {
+      return res.status(400).json({ erro: 'CPF já cadastrado.' });
     }
-    return res.status(500).json({ erro: 'Erro ao cadastrar funcionário' });
-  }
-});
-
-// Atualizar funcionário (apenas Admin e RH)
-router.put('/:id', auth, checkTrialValido, checkPerfil('Admin', 'RH'), async (req, res) => {
-  const { empresaId } = req.user;
-  const { id } = req.params;
-  const { nome, salarioBase, ativo } = req.body;
-
-  const updates = [];
-  const values = [];
-
-  if (nome !== undefined) {
-    values.push(nome);
-    updates.push(`nome = $${values.length}`);
-  }
-  if (salarioBase !== undefined) {
-    if (salarioBase <= 0) {
-      return res.status(400).json({ erro: 'Salário deve ser maior que zero' });
+    // Fallback de segurança caso a coluna documentacao falhe na criação:
+    try {
+      const resultFallback = await db.query(
+        'INSERT INTO funcionarios (empresa_id, nome, cpf, salario_base, ativo) VALUES ($1, $2, $3, $4, true) RETURNING id',
+        [empresaId, nome, cpf, salarioBase]
+      );
+      return res.json({ mensagem: 'Funcionário cadastrado (dados secundários ignorados na versão legado do DB).', id: resultFallback.rows[0].id });
+    } catch(err2) {
+      res.status(500).json({ erro: 'Erro ao cadastrar funcionário.' });
     }
-    values.push(salarioBase);
-    updates.push(`salario_base = $${values.length}`);
-  }
-  if (ativo !== undefined) {
-    values.push(ativo ? true : false);
-    updates.push(`ativo = $${values.length}`);
-  }
-
-  if (updates.length === 0) {
-    return res.status(400).json({ erro: 'Nenhum campo para atualizar' });
-  }
-
-  updates.push('updated_at = CURRENT_TIMESTAMP');
-  values.push(id, empresaId);
-  const idIndex = values.length - 1;
-  const empresaIdIndex = values.length;
-
-  try {
-    const result = await db.query(
-      `UPDATE funcionarios SET ${updates.join(', ')} WHERE id = $${idIndex} AND empresa_id = $${empresaIdIndex}`,
-      values
-    );
-    if (result.rowCount === 0) {
-      return res.status(404).json({ erro: 'Funcionário não encontrado' });
-    }
-    res.json({ mensagem: 'Funcionário atualizado com sucesso' });
-  } catch (err) {
-    return res.status(500).json({ erro: 'Erro ao atualizar funcionário' });
-  }
-});
-
-// Desativar funcionário (soft delete - apenas Admin)
-router.delete('/:id', auth, checkTrialValido, checkPerfil('Admin'), async (req, res) => {
-  const { empresaId } = req.user;
-  const { id } = req.params;
-
-  try {
-    const result = await db.query(
-      'UPDATE funcionarios SET ativo = false, updated_at = CURRENT_TIMESTAMP WHERE id = $1 AND empresa_id = $2',
-      [id, empresaId]
-    );
-    if (result.rowCount === 0) {
-      return res.status(404).json({ erro: 'Funcionário não encontrado' });
-    }
-    res.json({ mensagem: 'Funcionário desativado com sucesso' });
-  } catch (err) {
-    return res.status(500).json({ erro: 'Erro ao desativar funcionário' });
   }
 });
 

@@ -6,8 +6,34 @@
   <title>Sistema de Férias - Home</title>
   <link rel="stylesheet" href="home.css">
   <link rel="stylesheet" href="menu-global.css">
+  <style>
+    /* Estilos do Dropdown e Modal de Funcionários */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content { display: none; position: absolute; right: 0; background-color: #fff; min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 101; border-radius: 8px; overflow: hidden; border: 1px solid #eee; margin-top: 5px; }
+    .dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; font-weight: 500; transition: background 0.2s; }
+    .dropdown-content a:hover { background-color: #f1f1f1; }
+    .dropdown-content.show { display: block; }
+    .dropdown-header { cursor: pointer; background: white; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: bold; color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+    .dropdown-header:hover { transform: translateY(-2px); }
+    
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(3px); }
+    .modal-content { background-color: #fff; margin: 10vh auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; }
+    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; transition: color 0.2s; }
+    .close-modal:hover { color: #333; }
+    .modal-form-group { margin-bottom: 15px; }
+    .modal-form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
+    .modal-form-group input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+    .modal-form-group input:focus { outline: none; border-color: #667eea; }
+    .btn-submit-modal { width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: opacity 0.2s; }
+    .btn-submit-modal:hover { opacity: 0.9; }
+  </style>
 </head>
 <body>
+  <!-- Botão de Login no canto superior direito -->
+  <div id="authContainer" style="position: absolute; top: 1.5rem; right: 1.5rem; z-index: 100;">
+    <a href="login.html" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.2s; display: inline-block;">🔐 Acessar Sistema</a>
+  </div>
+
   <!-- Menu Lateral -->
   <button class="menu-toggle">☰</button>
   <div class="sidebar-overlay"></div>
@@ -33,6 +59,12 @@
             <a href="investimentos.html">
               <span class="menu-icon">📚</span>
               <span>Educação Financeira</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="ponto.html">
+              <span class="menu-icon">⏱️</span>
+              <span>Bater Ponto</span>
             </a>
           </li>
         </ul>
@@ -135,6 +167,18 @@
             <div class="card-button">Aprender a Investir →</div>
           </a>
 
+          <a href="ponto.html" class="menu-card ponto" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-left: 4px solid #f39c12;">
+            <div class="card-icon" style="background: rgba(243, 156, 18, 0.1); color: #f39c12;">⏱️</div>
+            <h3>Bater Ponto</h3>
+            <p>Registre sua jornada de trabalho diária (Entrada, Pausa e Saída)</p>
+            <div class="card-features">
+              <span>✓ Controle de Horas</span>
+              <span>✓ Histórico Diário</span>
+              <span>✓ Simples e Rápido</span>
+            </div>
+            <div class="card-button" style="color: #f39c12;">Registrar Ponto →</div>
+          </a>
+
         </div>
       </section>
 
@@ -177,5 +221,132 @@
     <p>Desenvolvido para auxiliar trabalhadores brasileiros</p>
   </footer>
   <script src="menu-global.js"></script>
+  
+  <!-- Modal para Adicionar Funcionário -->
+  <div id="employeeModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeEmployeeModal()">&times;</span>
+      <h2 style="color: #667eea; margin-bottom: 20px; font-size: 24px;">👥 Novo Funcionário</h2>
+      <form id="addEmployeeForm">
+        <div class="modal-form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="empNome" required placeholder="Ex: João da Silva">
+        </div>
+        <div class="modal-form-group">
+          <label>CPF</label>
+          <input type="text" id="empCpf" required placeholder="000.000.000-00">
+        </div>
+        <div class="modal-form-group">
+          <label>Cargo</label>
+          <input type="text" id="empCargo" required placeholder="Ex: Desenvolvedor">
+        </div>
+        <div class="modal-form-group">
+          <label>Setor</label>
+          <input type="text" id="empSetor" required placeholder="Ex: Tecnologia">
+        </div>
+        <div class="modal-form-group">
+          <label>Documentação Adicional (RG, Arquivos, etc.)</label>
+          <input type="text" id="empDocs" placeholder="Link do Drive, RG ou observações">
+        </div>
+        <div class="modal-form-group">
+          <label>Salário Base Inicial (R$)</label>
+          <input type="number" id="empSalario" step="0.01" min="0" required placeholder="Ex: 3500.00">
+        </div>
+        <button type="submit" class="btn-submit-modal">Cadastrar Funcionário</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Verifica se o usuário está logado
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    const authContainer = document.getElementById('authContainer');
+
+    if (token && userStr) {
+      const user = JSON.parse(userStr);
+      
+      // Define opções extras para Admin/RH da Empresa
+      let adminOptions = '';
+      if (user.perfil === 'Admin' || user.perfil === 'RH') {
+        adminOptions = `<a href="#" onclick="openEmployeeModal()">➕ Adicionar Funcionário</a>`;
+      }
+
+      // Renderiza Dropdown Interativo
+      authContainer.innerHTML = `
+        <div class="dropdown">
+          <div class="dropdown-header" onclick="toggleDropdown()">
+            Olá, ${user.nome} <span style="font-size: 10px;">▼</span>
+          </div>
+          <div id="myDropdown" class="dropdown-content">
+            ${adminOptions}
+            <a href="#" onclick="logout()" style="color: #e74c3c;">🚪 Sair do Sistema</a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Função para abrir/fechar o dropdown ao clicar
+    function toggleDropdown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Funções de controle do Modal
+    function openEmployeeModal() { 
+      document.getElementById('employeeModal').style.display = 'block'; 
+      document.getElementById("myDropdown").classList.remove("show"); // Fecha o menu ao abrir o modal
+    }
+    function closeEmployeeModal() { document.getElementById('employeeModal').style.display = 'none'; }
+    
+    window.onclick = function(event) {
+      // Fecha o dropdown se o usuário clicar fora dele
+      if (!event.target.closest('.dropdown-header')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+
+      if (event.target === document.getElementById('employeeModal')) closeEmployeeModal();
+    }
+
+    // Requisição para cadastrar funcionário
+    document.getElementById('addEmployeeForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('empNome').value;
+      const cpf = document.getElementById('empCpf').value;
+      const cargo = document.getElementById('empCargo').value;
+      const setor = document.getElementById('empSetor').value;
+      const documentacao = document.getElementById('empDocs').value;
+      const salarioBase = document.getElementById('empSalario').value;
+
+      try {
+        const res = await fetch('/api/funcionarios', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ nome, cpf, cargo, setor, documentacao, salarioBase })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('✅ ' + data.mensagem);
+          closeEmployeeModal();
+          e.target.reset(); // Limpa o formulário
+        } else {
+          alert('❌ Erro: ' + data.erro);
+        }
+      } catch (err) {
+        alert('Erro ao conectar com o servidor.');
+      }
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.reload(); // Recarrega a página para voltar ao estado deslogado
+    }
+  </script>
 </body>
 </html>

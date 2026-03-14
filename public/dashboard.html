@@ -118,8 +118,8 @@
       window.location.href = '/login.html';
     }
 
-    document.getElementById('userName').textContent = user.name;
-    document.getElementById('userPlan').textContent = user.plan.toUpperCase();
+    document.getElementById('userName').textContent = user.nome || '';
+    document.getElementById('userPlan').textContent = (user.empresa?.planoAtivo || 'Free').toUpperCase();
 
     function logout() {
       localStorage.clear();
@@ -146,10 +146,10 @@
       
       const container = document.getElementById('plansContainer');
       container.innerHTML = Object.entries(plans).map(([key, plan]) => `
-        <div style="padding: 15px; border: 2px solid ${user.plan === key ? '#667eea' : '#ddd'}; border-radius: 5px; margin-bottom: 10px;">
+        <div style="padding: 15px; border: 2px solid ${user.empresa?.planoAtivo?.toLowerCase() === key.toLowerCase() ? '#667eea' : '#ddd'}; border-radius: 5px; margin-bottom: 10px;">
           <strong>${plan.name}</strong> - R$ ${plan.price}/mês<br>
           <small>${plan.features.join(', ')}</small><br>
-          ${user.plan !== key ? `<button class="upgrade-btn" onclick="upgradePlan('${key}')" style="margin-top: 10px; font-size: 12px; padding: 8px;">Mudar para ${plan.name}</button>` : '<span style="color: #27ae60;">✓ Plano Atual</span>'}
+          ${user.empresa?.planoAtivo?.toLowerCase() !== key.toLowerCase() ? `<button class="upgrade-btn" onclick="upgradePlan('${key}')" style="margin-top: 10px; font-size: 12px; padding: 8px;">Mudar para ${plan.name}</button>` : '<span style="color: #27ae60;">✓ Plano Atual</span>'}
         </div>
       `).join('');
     }
@@ -188,10 +188,10 @@
         container.innerHTML = history.map(h => `
           <div class="history-item">
             ${new Date(h.created_at).toLocaleString('pt-BR')} - 
-            Salário: R$ ${h.salario_bruto} - 
-            ${h.dias_ferias} dias - 
-            Líquido: R$ ${h.total_liquido.toFixed(2)} - 
-            Por: ${h.user_name}
+            Salário: R$ ${h.salario_base_momento} - 
+            ${h.dias_solicitados} dias - 
+            Líquido: R$ ${Number(h.liquido).toFixed(2)} - 
+            Por: ${h.usuario_nome}
           </div>
         `).join('');
       }
@@ -217,10 +217,10 @@
       if (res.ok) {
         document.getElementById('valorFerias').textContent = 'R$ ' + data.valorFerias;
         document.getElementById('adicional').textContent = 'R$ ' + data.adicionalTerco;
-        document.getElementById('totalBruto').textContent = 'R$ ' + data.totalBruto;
+        document.getElementById('totalBruto').textContent = 'R$ ' + (data.totalBruto || data.valorBruto);
         document.getElementById('inss').textContent = 'R$ ' + data.inss;
         document.getElementById('irrf').textContent = 'R$ ' + data.irrf;
-        document.getElementById('totalLiquido').textContent = 'R$ ' + data.totalLiquido;
+        document.getElementById('totalLiquido').textContent = 'R$ ' + (data.totalLiquido || data.liquido);
         document.getElementById('result').style.display = 'block';
         
         loadStatus();
