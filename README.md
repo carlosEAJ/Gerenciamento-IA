@@ -1,4 +1,4 @@
-# 💼 Calculadora de Férias
+# 💼 Calculadora de Férias - Plataforma SaaS (v1.01.2)
 
 ![Node.js](https://img.shields.io/badge/Node.js-v18+-green?logo=node.js)
 ![Express](https://img.shields.io/badge/Express-v4.18+-blue?logo=express)
@@ -28,12 +28,22 @@ Sistema completo para cálculo de férias com suporte a multi-tenancy (múltipla
   - Autenticação JWT e senhas criptografadas.
   - Gestão de Planos de Assinatura (Free, Pro, Enterprise) com limites mensais.
   - Controle de Funcionários e Histórico de Cálculos salvo no Banco de Dados.
+- **Módulo de Ponto Eletrônico**: Registro de jornada (Entrada, Pausas e Saída) com histórico em tempo real.
+- **Educação Financeira e FAQ**: Central de ajuda completa para empresas e funcionários.
 - **Cálculo de Férias**:
-- Cálculo proporcional de férias baseado nos dias solicitados
-- Adicional constitucional de 1/3 sobre as férias
-- Cálculo automático de INSS (alíquotas progressivas)
-- Cálculo automático de IRRF (Imposto de Renda)
-- Explicação detalhada de cada valor calculado
+  - Cálculo proporcional de férias baseado nos dias solicitados
+  - Adicional constitucional de 1/3 sobre as férias
+  - Cálculo automático de INSS (alíquotas progressivas)
+  - Cálculo automático de IRRF (Imposto de Renda)
+  - Explicação detalhada de cada valor calculado
+
+## 🌟 Novidades da Versão 1.01.2
+
+- **Gestão de Funcionários Aprimorada**: Modal rápido de cadastro com informações de Cargo, Setor e Documentação.
+- **Relógio de Ponto Inteligente**: Nova interface para os colaboradores baterem ponto com seleção dinâmica.
+- **Integração Contínua (CI/CD)**: Pipeline configurado no GitHub Actions para validação automatizada.
+- **Central de Ajuda Integrada**: Páginas separadas de FAQ focadas na experiência do Administrador/RH e do Colaborador.
+- **Nova Página Inicial**: Design moderno com cartões informativos e demonstrativo dos planos de assinatura.
 
 ## 🚀 Como Executar
 

@@ -54,6 +54,14 @@ O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software
 - `public/investimentos.html` - Conteúdo educacional
 - `public/investimentos.css` - Estilização
 
+#### 3. Central de Ajuda (FAQ)
+- **Tecnologia**: HTML5 + CSS3 (details/summary)
+- **Funcionalidades**:
+  - Respostas para dúvidas comuns sobre cálculos
+  - Informações de uso do ponto
+  - Detalhes de segurança e privacidade
+**Arquivos:** `public/faq.html`
+
 ### 🏢 Para Empresa
 
 #### 3. Captação de Recursos
@@ -81,6 +89,14 @@ O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software
 - `public/reducao-custos.html` - Interface de sugestões
 - `public/reducao-custos.css` - Estilização
 - `public/reducao-custos.js` - Lógica de upload e processamento
+
+#### 5. FAQ Administrativo
+- **Tecnologia**: HTML5 + CSS3 (details/summary)
+- **Funcionalidades**:
+  - Instruções sobre cadastro de funcionários
+  - Detalhamento de limites mensais e planos
+  - Privacidade e Multi-tenancy
+**Arquivos:** `public/faq.html`
 
 ## Navegação do Sistema
 
@@ -124,6 +140,7 @@ O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software
 ┌───▼──────┐  ┌──▼──────────┐
 │Calculad. │  │ Captação    │
 │Educação  │  │ Sugestões   │
+│FAQ       │  │ FAQ         │
 └──────────┘  └─────────────┘
 ```
 

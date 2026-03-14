@@ -74,6 +74,13 @@ Documentação da interface do usuário
 - `ponto.html` - Interface e Lógica de Ponto
 - `src/routes/ponto.js` - API de controle no banco
 
+#### 4. Dúvidas Frequentes (FAQ)
+- Central de ajuda para funcionários
+- Explicações de cálculos e leis trabalhistas
+
+**Arquivos:**
+- `faq.html` - Interface de Perguntas Frequentes
+
 ### 🏢 Para Empresa
 
 #### 3. Captação de Recursos
@@ -97,6 +104,13 @@ Documentação da interface do usuário
 - `reducao-custos.html` - Interface
 - `reducao-custos.css` - Estilos
 - `reducao-custos.js` - Lógica e upload
+
+#### 5. FAQ da Empresa
+- Perguntas sobre planos e limites mensais
+- Informações de gestão e isolamento de dados
+
+**Arquivos:**
+- `faq.html` - Interface compartilhada de FAQ
 
 ### 🏛️ Componentes Globais
 
@@ -160,6 +174,7 @@ projeto-raiz/
 │   ├── reducao-custos.html     # Sugestões
 │   ├── reducao-custos.css      # Estilos sugestões
 │   ├── reducao-custos.js       # Lógica sugestões
+│   ├── faq.html                # Central de ajuda
 │   ├── menu-global.css         # Menu lateral
 │   └── menu-global.js          # Lógica menu
 └── documents/                   # Documentação

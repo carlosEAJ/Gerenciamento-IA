@@ -228,6 +228,22 @@ Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de 
 - Conteúdo inserido via JavaScript
 - Exibe fórmulas e explicações de cada cálculo
 
+## Seção de Planos de Assinatura (Home)
+
+```html
+<section class="pricing-section" id="planos">
+  <h2>💎 Planos de Assinatura</h2>
+  <div class="pricing-grid">
+    <!-- Cards dos planos -->
+  </div>
+</section>
+```
+
+**Características:**
+- Cards interativos com os planos **Free**, **Pro** (Destacado como "Mais Popular") e **Enterprise**.
+- Detalhamento de valores, benefícios e créditos de cálculo por mês.
+- Links (botões) direcionando para a página de criação de conta (`login.html`).
+
 ## Footer (Rodapé)
 
 ```html
