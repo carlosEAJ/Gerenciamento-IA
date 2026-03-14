@@ -138,6 +138,39 @@
         </div>
       </section>
 
+      <!-- Integração de Dados -->
+      <section class="integrations-section">
+        <h2>🔗 Integração de Dados</h2>
+        <p>Conecte sua fonte de dados para alimentar este dashboard automaticamente.</p>
+        <div class="integration-options">
+          
+          <!-- Opção 1: Conexão com Banco de Dados -->
+          <div class="integration-card">
+            <h3>Conectar Banco de Dados</h3>
+            <p>Sincronize os dados diretamente do seu banco de dados (PostgreSQL, MySQL, etc.).</p>
+            <div class="input-group">
+              <label for="dbConnectionString">String de Conexão</label>
+              <input type="password" id="dbConnectionString" placeholder="Ex: postgresql://user:pass@host:port/db">
+            </div>
+            <button class="btn-primary" id="btnSaveDbConnection">Salvar Conexão</button>
+            <div class="feedback" id="dbFeedback"></div>
+          </div>
+
+          <!-- Opção 2: Upload de Arquivo -->
+          <div class="integration-card">
+            <h3>Upload de Arquivo</h3>
+            <p>Envie uma planilha (Excel, CSV) ou arquivo de texto (TXT) com os dados.</p>
+            <div class="input-group">
+              <label for="dataFile">Selecione o arquivo</label>
+              <input type="file" id="dataFile" accept=".xlsx, .xls, .csv, .txt">
+            </div>
+            <button class="btn-primary" id="btnUploadFile">Processar Arquivo</button>
+            <div class="feedback" id="uploadFeedback"></div>
+          </div>
+
+        </div>
+      </section>
+
       <!-- Gráfico -->
       <section class="chart-section">
         <h2>Gráfico de Captação</h2>

@@ -11,6 +11,7 @@ const calculationsRoutes = require('./src/routes/calculations');
 const plansRoutes = require('./src/routes/plans');
 const pontoRoutes = require('./src/routes/ponto');
 const funcionariosRoutes = require('./src/routes/funcionarios');
+const integrationsRoutes = require('./src/routes/integrations');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/api/calculations', calculationsRoutes);
 app.use('/api/plans', plansRoutes);
 app.use('/api/ponto', pontoRoutes);
 app.use('/api/funcionarios', funcionariosRoutes);
+app.use('/api/integrations', integrationsRoutes);
 
 // Rota legada (compatibilidade)
 app.post('/calcular-ferias', (req, res) => {
