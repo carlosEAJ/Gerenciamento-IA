@@ -46,21 +46,4 @@ const checkPlano = (...planosPermitidos) => {
   };
 };
 
-// Verificar se trial expirou
-const checkTrialValido = (req, res, next) => {
-  if (req.user.planoAtivo === 'Trial') {
-    const dataFimTrial = new Date(req.user.dataFimTrial);
-    const agora = new Date();
-    
-    if (agora > dataFimTrial) {
-      return res.status(403).json({ 
-        erro: 'Trial expirado',
-        mensagem: 'Seu período de teste expirou. Faça upgrade para continuar usando o sistema.',
-        dataExpiracao: dataFimTrial
-      });
-    }
-  }
-  next();
-};
-
-module.exports = { auth, checkPerfil, checkPlano, checkTrialValido, SECRET };
+module.exports = { auth, checkPerfil, checkPlano, SECRET };

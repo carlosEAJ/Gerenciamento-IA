@@ -335,3 +335,44 @@ footer p {
     gap: 1.5rem;
   }
 }
+
+/* Estilos do Dropdown e Modal de Funcionários */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-content { display: none; position: absolute; right: 0; background-color: #fff; min-width: 220px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 101; border-radius: 8px; overflow: hidden; border: 1px solid #eee; margin-top: 5px; }
+.dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; font-weight: 500; transition: background 0.2s; }
+.dropdown-content a:hover { background-color: #f1f1f1; }
+.dropdown-content.show { display: block; }
+.dropdown-header { cursor: pointer; background: white; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: bold; color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
+.dropdown-header:hover { transform: translateY(-2px); }
+
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(3px); }
+.modal-content { background-color: #fff; margin: 10vh auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; }
+.close-modal { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; transition: color 0.2s; }
+.close-modal:hover { color: #333; }
+.modal-form-group { margin-bottom: 15px; }
+.modal-form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
+.modal-form-group input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+.modal-form-group input:focus { outline: none; border-color: #667eea; }
+.btn-submit-modal { width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: opacity 0.2s; }
+.btn-submit-modal:hover { opacity: 0.9; }
+
+/* Estilos da Seção de Planos (Pricing) */
+.pricing-section { margin: 60px 0; }
+.pricing-section h2 { text-align: center; color: #667eea; margin-bottom: 10px; font-size: 2rem; border-bottom: none; }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: center; margin-top: 40px; }
+.pricing-card { background: white; border-radius: 15px; padding: 40px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; position: relative; transition: transform 0.3s; }
+.pricing-card:hover { transform: translateY(-5px); }
+.pricing-card.pro { transform: scale(1.05); box-shadow: 0 15px 40px rgba(102,126,234,0.2); border: 2px solid #667eea; z-index: 2; }
+.pricing-card.pro:hover { transform: scale(1.05) translateY(-5px); }
+.pricing-card h3 { color: #333; font-size: 1.5rem; margin-bottom: 15px; }
+.pricing-card .price { font-size: 2.5rem; font-weight: bold; color: #667eea; margin-bottom: 25px; }
+.pricing-card .price span { font-size: 1.1rem; color: #999; font-weight: normal; }
+.pricing-card ul { list-style: none; padding: 0; margin-bottom: 30px; text-align: left; }
+.pricing-card ul li { margin-bottom: 12px; color: #555; display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+.pricing-card ul li::before { content: '✓'; color: #27ae60; font-weight: bold; }
+.btn-subscribe { display: inline-block; padding: 12px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; width: 100%; transition: all 0.3s; }
+.btn-free { background: #f8f9fa; color: #333; border: 1px solid #ddd; } .btn-free:hover { background: #e9ecef; }
+.btn-pro { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; } .btn-pro:hover { opacity: 0.9; box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+.btn-enterprise { background: #2c3e50; color: white; border: none; } .btn-enterprise:hover { background: #1a252f; }
+.popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(243,156,18,0.3); }
+@media (max-width: 768px) { .pricing-card.pro { transform: scale(1); z-index: 1; } .pricing-card.pro:hover { transform: translateY(-5px); } }

@@ -26,7 +26,7 @@ Sistema completo para cálculo de férias com suporte a multi-tenancy (múltipla
 - **Módulo SaaS (Administrativo)**:
   - Multi-tenancy: Cada empresa tem seus dados isolados.
   - Autenticação JWT e senhas criptografadas.
-  - Gestão de Planos de Assinatura (Trial, Básico, Premium) com limites mensais.
+  - Gestão de Planos de Assinatura (Free, Pro, Enterprise) com limites mensais.
   - Controle de Funcionários e Histórico de Cálculos salvo no Banco de Dados.
 - **Cálculo de Férias**:
 - Cálculo proporcional de férias baseado nos dias solicitados

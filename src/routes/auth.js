@@ -28,16 +28,11 @@ router.post('/register', async (req, res) => {
   }
 
   const senhaHash = await bcrypt.hash(senha, 10);
-  
-  // Calcular data fim do trial (7 dias)
-  const dataInicioTrial = new Date();
-  const dataFimTrial = new Date();
-  dataFimTrial.setDate(dataFimTrial.getDate() + 7);
 
   try {
     const empresaResult = await db.query(
-      'INSERT INTO empresas (razao_social, cnpj, email, plano_ativo, data_inicio_trial, data_fim_trial) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', 
-      [razaoSocial, cnpjLimpo, email, 'Trial', dataInicioTrial.toISOString(), dataFimTrial.toISOString()]
+      'INSERT INTO empresas (razao_social, cnpj, email, plano_ativo) VALUES ($1, $2, $3, $4) RETURNING id', 
+      [razaoSocial, cnpjLimpo, email, 'Free']
     );
     const empresaId = empresaResult.rows[0].id;
 
@@ -50,9 +45,7 @@ router.post('/register', async (req, res) => {
       mensagem: 'Empresa registrada com sucesso',
       empresaId,
       usuarioId: usuarioResult.rows[0].id,
-      plano: 'Trial',
-      diasTrial: 7,
-      dataFimTrial: dataFimTrial.toISOString()
+      plano: 'Free'
     });
   } catch (err) {
     if (err.code === '23505') {
@@ -69,7 +62,7 @@ router.post('/login', async (req, res) => {
 
   try {
     const result = await db.query(
-      `SELECT u.*, e.razao_social, e.cnpj, e.plano_ativo, e.data_fim_trial 
+      `SELECT u.*, e.razao_social, e.cnpj, e.plano_ativo 
        FROM usuarios u 
        JOIN empresas e ON u.empresa_id = e.id 
        WHERE u.email = $1 AND u.ativo = true`, 
@@ -87,20 +80,12 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ erro: 'Credenciais inválidas' });
     }
 
-    // Verificar se trial expirou
-    let trialExpirado = false;
-    if (usuario.plano_ativo === 'Trial') {
-      const dataFimTrial = new Date(usuario.data_fim_trial);
-      trialExpirado = new Date() > dataFimTrial;
-    }
-
     const token = jwt.sign(
       { 
         usuarioId: usuario.id, 
         empresaId: usuario.empresa_id, 
         perfil: usuario.perfil,
-        planoAtivo: usuario.plano_ativo,
-        dataFimTrial: usuario.data_fim_trial
+        planoAtivo: usuario.plano_ativo
       },
       SECRET,
       { expiresIn: '7d' }
@@ -119,8 +104,7 @@ router.post('/login', async (req, res) => {
           cnpj: usuario.cnpj,
           planoAtivo: usuario.plano_ativo
         }
-      },
-      trialExpirado
+      }
     });
   } catch (err) {
     return res.status(500).json({ erro: 'Erro interno no servidor' });

@@ -8,7 +8,7 @@ Sistema completo de cálculo de férias transformado em SaaS com multi-tenancy, 
 - ✅ **Multi-tenancy**: Cada empresa tem seus dados isolados
 - ✅ **Autenticação JWT**: Login seguro com tokens
 - ✅ **3 Planos de Assinatura**: Free, Pro, Enterprise
-- ✅ **Limites por Plano**: Controle de uso mensal
+- ✅ **Limites por Plano**: Controle de uso por ciclo de 30 dias
 - ✅ **Banco de Dados**: SQLite (fácil migrar para PostgreSQL/MySQL)
 - ✅ **API RESTful**: Endpoints documentados
 - ✅ **Dashboard Completo**: Interface moderna
@@ -67,10 +67,10 @@ npm start
 
 ## 📊 Planos Disponíveis
 
-| Plano | Preço/mês | Cálculos/mês | Recursos |
+| Plano | Preço/mês | Cálculos/Mês | Recursos |
 |-------|-----------|--------------|----------|
 | **Free** | R$ 0 | 10 | Básico, suporte por email |
-| **Pro** | R$ 49,90 | 100 | Histórico completo, API, suporte prioritário |
+| **Pro** | R$ 79,90 | 40 | Histórico completo, API, suporte prioritário |
 | **Enterprise** | R$ 199,90 | Ilimitado | Multi-usuários, suporte 24/7, customizações |
 
 ## 🔌 API Endpoints
@@ -127,7 +127,7 @@ Ver status da assinatura atual (requer autenticação)
 Fazer upgrade de plano (requer autenticação e role admin)
 ```json
 {
-  "plan": "pro"
+  "plan": "Pro"
 }
 ```
 

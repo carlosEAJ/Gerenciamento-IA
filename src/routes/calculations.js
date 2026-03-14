@@ -1,14 +1,14 @@
 const express = require('express');
 const db = require('../config/database');
-const { auth, checkTrialValido, checkPlano } = require('../middleware/auth');
+const { auth, checkPlano } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Limites por plano
 const LIMITES_PLANO = {
-  Trial: 5,      // 5 cálculos durante o trial
-  Basico: 50,    // 50 cálculos/mês
-  Premium: -1    // ilimitado
+  Free: 10,     // 10 cálculos/mês
+  Pro: 40,      // 40 cálculos/mês
+  Enterprise: -1 // ilimitado
 };
 
 // Tabelas de Impostos (Futuramente virão de uma entidade no banco de dados)
@@ -56,7 +56,7 @@ function calcularFerias(salarioBase, diasSolicitados) {
 }
 
 // Calcular férias para um funcionário
-router.post('/', auth, checkTrialValido, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { usuarioId, empresaId, planoAtivo } = req.user;
   const { funcionarioId, dataInicioFerias, dataFimFerias, observacoes } = req.body;
   const diasSolicitados = req.body.diasSolicitados || req.body.diasFerias;
@@ -77,15 +77,15 @@ router.post('/', auth, checkTrialValido, async (req, res) => {
     );
 
     const count = parseInt(countResult.rows[0].count);
-    const limite = LIMITES_PLANO[planoAtivo] || LIMITES_PLANO.Trial;
+    const limite = LIMITES_PLANO[planoAtivo] || LIMITES_PLANO.Free;
     
     if (limite !== -1 && count >= limite) {
       return res.status(403).json({ 
-        erro: 'Limite de cálculos atingido',
+        erro: 'Limite mensal de cálculos atingido',
         planoAtual: planoAtivo,
         limite: limite,
         usado: count,
-        mensagem: planoAtivo === 'Trial' ? 'Faça upgrade para continuar' : 'Limite mensal atingido'
+        mensagem: 'Faça um upgrade de plano para continuar utilizando ou aguarde o próximo mês.'
       });
     }
 
@@ -142,7 +142,7 @@ router.post('/', auth, checkTrialValido, async (req, res) => {
 });
 
 // Histórico de cálculos da empresa
-router.get('/historico', auth, checkTrialValido, async (req, res) => {
+router.get('/historico', auth, async (req, res) => {
   const { empresaId } = req.user;
   const { funcionarioId, status, limite = 50 } = req.query;
 
@@ -183,7 +183,7 @@ router.get('/historico', auth, checkTrialValido, async (req, res) => {
 });
 
 // Buscar cálculo específico
-router.get('/:id', auth, checkTrialValido, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   const { empresaId } = req.user;
   const { id } = req.params;
 
@@ -210,7 +210,7 @@ router.get('/:id', auth, checkTrialValido, async (req, res) => {
 });
 
 // Atualizar status do cálculo (apenas Admin e RH)
-router.patch('/:id/status', auth, checkTrialValido, async (req, res) => {
+router.patch('/:id/status', auth, async (req, res) => {
   const { empresaId, perfil } = req.user;
   const { id } = req.params;
   const { status } = req.body;
