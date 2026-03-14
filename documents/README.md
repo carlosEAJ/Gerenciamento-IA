@@ -1,4 +1,4 @@
-# 📚 Documentação do Projeto - Sistema de Gestão de Férias (SaaS)
+# 📚 Documentação do Projeto - Sistema de Férias SaaS (v1.01.2)
 
 Esta pasta contém toda a documentação técnica do projeto, organizada por categorias.
 
@@ -36,9 +36,10 @@ Documentação da interface do usuário
 - Autenticação e Autorização (JWT)
 - Multi-tenancy (isolamento por empresa)
 - Gestão de Planos de Assinatura (Free, Pro, Enterprise)
-- Gestão de Funcionários
+- Gestão de Funcionários (Cargo, Setor, Documentação)
+- Controle de Histórico e Status
 
-**Arquivos:** `src/routes/auth.js`, `src/routes/plans.js`, `src/routes/funcionarios.js`
+**Arquivos:** `src/routes/auth.js`, `src/routes/plans.js`, `src/routes/funcionarios.js`, `src/routes/calculations.js`
 
 ### 👥 Para Funcionários
 
@@ -62,6 +63,16 @@ Documentação da interface do usuário
 **Arquivos:**
 - `investimentos.html` - Conteúdo educacional
 - `investimentos.css` - Estilos
+
+#### 3. Relógio de Ponto
+- Relógio em tempo real
+- Seleção de funcionário dinâmico
+- Registro de Entrada, Pausas e Saídas
+- Histórico de batidas em tempo real
+
+**Arquivos:**
+- `ponto.html` - Interface e Lógica de Ponto
+- `src/routes/ponto.js` - API de controle no banco
 
 ### 🏢 Para Empresa
 
@@ -112,6 +123,10 @@ Documentação da interface do usuário
 - CSS3 (Flexbox, Grid)
 - JavaScript ES6+
 
+### DevOps / Automação
+- **GitHub Actions**: Pipeline CI/CD para build e validação (Node.js)
+- **Estrutura Modular**: Separação completa de Rotas e Middlewares
+
 ### Bibliotecas
 - Chart.js - Gráficos interativos
 - SheetJS (XLSX) - Manipulação de Excel
@@ -132,11 +147,13 @@ projeto-raiz/
 ├── public/                      # Arquivos públicos
 │   ├── index.html              # Página inicial
 │   ├── home.css                # Estilos home
+│   ├── login.html              # Página de login/registro SaaS
 │   ├── calculadora.html        # Calculadora
 │   ├── styles.css              # Estilos calculadora
 │   ├── script.js               # Lógica calculadora
 │   ├── investimentos.html      # Educação financeira
 │   ├── investimentos.css       # Estilos investimentos
+│   ├── ponto.html              # Interface do Relógio de Ponto
 │   ├── captacao.html           # Captação
 │   ├── captacao.css            # Estilos captação
 │   ├── captacao.js             # Lógica captação

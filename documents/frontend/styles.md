@@ -93,6 +93,31 @@ header p {
 - **Cor**: Cinza médio (#666)
 - **Tamanho**: 1.1rem (17.6px)
 
+## Elementos Interativos (Modais e Dropdowns)
+
+Foram inseridos blocos de CSS de UI modernos nos arquivos como `index.html`:
+
+### Dropdown Profile
+```css
+.dropdown-content { display: none; position: absolute; ... }
+.dropdown-content.show { display: block; }
+```
+Baseado em `position: absolute`, permitindo flutuação limpa acima do conteúdo natural (z-index 101).
+
+### Modais Administrativos
+```css
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(3px); }
+```
+Usa `backdrop-filter: blur(3px)` para focar a visão do usuário 100% no formulário e escurecer a tabela de ferramentas do fundo.
+
+## Relógio de Ponto e Badges
+Em `ponto.html` botões são categorizados por cores psicológicas de status:
+- **Verde (27ae60)** para Entradas
+- **Laranjas e Azuis** para transições e retornos.
+- **Vermelho (e74c3c)** para encerramentos.
+
+Histórico carrega **Type Badges** de bordas arredondadas garantindo leitura ágil pelo time de RH na tela de Ponto.
+
 ## Main (Conteúdo Principal)
 
 ```css

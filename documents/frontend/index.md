@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de **Login**, **Dashboard** e a interface central da Calculadora de Férias. Todas as páginas (`index.html`, `login.html`, `dashboard.html`) seguem os mesmos princípios de semântica e responsividade listados abaixo.
+Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de **Login**, a **Home (index.html com Menu Dinâmico)** e a nova página do **Relógio de Ponto**. Todas seguem os mesmos princípios de semântica e responsividade.
 
 ## Estrutura do Documento
 
@@ -46,6 +46,8 @@ Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de 
 <header>
   <h1>💼 Calculadora de Férias</h1>
   <p>Calcule o valor das suas férias de forma simples e transparente</p>
+  <!-- Dropdown de Autenticação gerado dinamicamente -->
+  <div id="authContainer"></div>
 </header>
 ```
 

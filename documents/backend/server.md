@@ -4,12 +4,17 @@
 
 Com a transformação para SaaS, o servidor principal tornou-se o **`server-saas.js`**. Ele orquestra um servidor Express moderno que além de servir arquivos estáticos, lida com conexão a banco de dados (SQLite/PostgreSQL), autenticação JWT e rotas modulares separadas na pasta `src/`. O antigo `server.js` foi mantido provisoriamente por questões de retrocompatibilidade.
 
-## Dependências
+## Dependências e Inicialização
 
 ```javascript
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const authRoutes = require('./src/routes/auth');
+const calculationsRoutes = require('./src/routes/calculations');
+const plansRoutes = require('./src/routes/plans');
+const pontoRoutes = require('./src/routes/ponto');
+const funcionariosRoutes = require('./src/routes/funcionarios');
 ```
 
 - **express**: Framework web para Node.js
