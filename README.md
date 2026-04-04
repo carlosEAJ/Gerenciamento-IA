@@ -16,11 +16,21 @@ Sistema completo para cálculo de férias com suporte a multi-tenancy (múltipla
 
 ## 📸 Preview
 
-### Interface para Funcionários
+### Interface para Funcionários V 2.0.0
 ![Screenshot da Interface para Funcionários](./screenshots/para_funcionarios.png)
 
-### Interface para Empresas
+### Interface para Empresas V 2.0.0
 ![Screenshot da Interface para Empresas](./screenshots/para_empresa.png)
+
+### Version 3.0.0
+#### Sessão 1: Dashboard
+  ![Screenshot da Interface para Empresas](./screenshots/site-atualizado.png)
+
+#### sessão 2: Dashboard
+  ![Screenshot da Interface para Empresas](./screenshots/site-atualizado2.png)
+
+#### sessão 3: Dashboard
+  ![Screenshot da Interface para Empresas](./screenshots/site-atualizado2.png)
 
 ## 📋 Funcionalidades
 
