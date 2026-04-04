@@ -1,0 +1,261 @@
+/* ============================================
+   FAQ.CSS — Central de Ajuda / FAQ
+   (Reutiliza home.css, estende com estilos de FAQ)
+   ============================================ */
+
+/* Este arquivo complementa o home.css já linkado no faq.html */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --black-piano: #0a0a0a;
+  --black-soft: #111317;
+  --black-card: #16191f;
+  --black-border: #1e2229;
+  --blue-deep: #0d2240;
+  --blue-mid: #153966;
+  --blue-accent: #1a4d8f;
+  --blue-light: #2563ab;
+  --white-pure: #ffffff;
+  --white-muted: #c8d0dd;
+  --white-subtle: #8892a0;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', 'Segoe UI', sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--black-piano);
+  color: var(--white-pure);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(160deg, var(--blue-deep) 0%, var(--black-soft) 70%);
+  padding: 5rem 2rem 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--black-border);
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(26,77,143,0.2), transparent);
+  pointer-events: none;
+}
+
+.header-content { position: relative; z-index: 1; }
+
+header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+header p {
+  color: var(--white-muted);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  padding: 3rem 1.5rem 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── FAQ CONTAINER ── */
+.faq-container {
+  max-width: 780px;
+  width: 100%;
+}
+
+/* ── SCROLL OFFSET PARA ÂNCORAS ── */
+#empresa, #funcionario {
+  scroll-margin-top: 100px;
+}
+
+/* ── FAQ SECTION ── */
+.faq-section {
+  background: var(--black-card);
+  border: 1px solid var(--black-border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  transition: var(--transition);
+}
+
+.faq-section h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--white-pure);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--black-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Azul para empresa, mais neutro para funcionário */
+#empresa .faq-section h2,
+.faq-section:first-child h2 { color: var(--blue-light); }
+
+/* ── DETAILS / ACCORDION ── */
+details {
+  background: var(--black-soft);
+  border: 1px solid var(--black-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+details:hover {
+  border-color: var(--blue-mid);
+}
+
+details[open] {
+  border-color: var(--blue-accent);
+  box-shadow: 0 0 0 1px rgba(26,77,143,0.15);
+}
+
+/* ── SUMMARY ── */
+summary {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--white-muted);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.25rem;
+  transition: var(--transition);
+  user-select: none;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary:hover { color: var(--white-pure); }
+
+details[open] summary { color: var(--white-pure); }
+
+/* Ícone de toggle */
+summary::after {
+  content: '▼';
+  font-size: 0.65rem;
+  color: var(--blue-light);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 1rem;
+  opacity: 0.8;
+}
+
+details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+/* ── CONTEÚDO DO DETAILS ── */
+details > p,
+details > ol,
+details > ul {
+  margin: 0 1.25rem 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--black-border);
+  color: var(--white-subtle);
+  font-size: 0.87rem;
+  line-height: 1.75;
+}
+
+details ul {
+  list-style: none;
+  padding-left: 0 !important;
+}
+
+details ol {
+  padding-left: 1.5rem;
+}
+
+details li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(30,34,41,0.6);
+}
+
+details li:last-child { border-bottom: none; }
+
+details ul li::before {
+  content: '→ ';
+  color: var(--blue-light);
+}
+
+details ol li::marker { color: var(--blue-light); }
+
+details strong { color: var(--white-muted); }
+
+/* Segundo parágrafo em details */
+details p + p {
+  margin-top: 0.5rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--black-border);
+  background: var(--black-soft);
+  color: var(--white-subtle);
+  font-size: 0.8rem;
+  line-height: 1.8;
+}
+
+/* ── BACK BUTTON ── */
+.back-button {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--black-card);
+  border: 1px solid var(--black-border);
+  color: var(--white-muted);
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  text-decoration: none;
+}
+
+.back-button:hover {
+  background: var(--blue-deep);
+  color: var(--white-pure);
+  border-color: var(--blue-mid);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 4.5rem 1.5rem 2.5rem; }
+  .faq-section { padding: 1.75rem 1.25rem; }
+  summary { font-size: 0.85rem; padding: 1rem; }
+}
