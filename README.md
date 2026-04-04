@@ -1,4 +1,4 @@
-# 💼 Calculadora de Férias - Plataforma SaaS (v1.02.0)
+# 💼 Calculadora de Férias - Plataforma SaaS (v3.0.0)
 
 ![Node.js](https://img.shields.io/badge/Node.js-v18+-green?logo=node.js)
 ![Express](https://img.shields.io/badge/Express-v4.18+-blue?logo=express)
@@ -49,7 +49,7 @@ Sistema completo para cálculo de férias com suporte a multi-tenancy (múltipla
   - Cálculo automático de IRRF (Imposto de Renda)
   - Explicação detalhada de cada valor calculado
 
-## 🌟 Novidades da Versão 1.02.0
+## 🌟 Novidades da Versão 3.0.0
 
 - **Integração de Dados**: Nova funcionalidade para conectar bancos de dados externos e fazer upload de planilhas (Excel, CSV, TXT) para popular os dashboards corporativos.
 - **Gestão de Múltiplos Usuários (RBAC)**: Administradores de empresas agora podem criar e gerenciar sub-contas para sua equipe com perfis de acesso específicos (Admin, RH, Financeiro, Colaborador).

@@ -1,4 +1,4 @@
-# 🚀 Calculadora de Férias - SaaS Edition (v1.02.0)
+# 🚀 Calculadora de Férias - SaaS Edition (v3.0.0)
 
 Sistema completo de cálculo de férias transformado em SaaS com multi-tenancy, autenticação e planos de assinatura.
 
@@ -13,7 +13,7 @@ Sistema completo de cálculo de férias transformado em SaaS com multi-tenancy, 
 - ✅ **API RESTful**: Endpoints documentados
 - ✅ **Dashboard Completo**: Interface moderna
 - ✅ **Histórico de Cálculos**: Rastreamento completo
-- ✅ **CI/CD Pipeline**: Integração contínua com GitHub Actions (v1.02.0)
+- ✅ **CI/CD Pipeline**: Integração contínua com GitHub Actions (v3.0.0)
 
 ## 🏗️ Estrutura do Projeto
 

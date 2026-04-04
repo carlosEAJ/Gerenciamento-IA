@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de **Login**, a **Home (index.html com Menu Dinâmico)** e a nova página do **Relógio de Ponto**. Todas seguem os mesmos princípios de semântica e responsividade.
+Com a mudança para SaaS e a chegada da versão 3.0.0, o frontend expandiu-se e passou a incluir páginas de **Login**, a **Home (index.html com Menu Dinâmico)**, a página do **Relógio de Ponto** e os novos **Dashboards Corporativos**. Todas seguem os mesmos princípios de semântica e responsividade.
 
 ## Estrutura do Documento
 
@@ -243,6 +243,23 @@ Com a mudança para SaaS, o frontend expandiu-se e passou a incluir páginas de 
 - Cards interativos com os planos **Free**, **Pro** (Destacado como "Mais Popular") e **Enterprise**.
 - Detalhamento de valores, benefícios e créditos de cálculo por mês.
 - Links (botões) direcionando para a página de criação de conta (`login.html`).
+
+## Seção de Dashboard Corporativo (v3.0.0)
+
+```html
+<section class="dashboard-section" id="dashboard">
+  <h2>📊 Dashboard</h2>
+  <div class="dashboard-widgets">
+    <!-- Gráficos, métricas e sessões do painel -->
+  </div>
+  <div class="upload-section">
+    <!-- Formulário para envio de planilhas e integração DB -->
+  </div>
+</section>
+```
+**Características:**
+- Visualização em Sessões (1, 2 e 3) conforme nova interface.
+- Suporte dinâmico para interfaces de upload de arquivos Excel e CSV.
 
 ## Footer (Rodapé)
 

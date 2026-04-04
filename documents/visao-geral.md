@@ -2,7 +2,7 @@
 
 ## Descrição do Projeto
 
-O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software as a Service) multi-tenancy** na versão **1.02.0**. Ele oferece gestão centralizada de funcionários, relógio de ponto eletrônico, cálculos trabalhistas com histórico em banco de dados, limites baseados em planos de assinatura, e esteira automatizada de CI/CD.
+O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software as a Service) multi-tenancy** na versão **3.0.0**. Ele oferece gestão centralizada de funcionários, relógio de ponto eletrônico, cálculos trabalhistas com histórico em banco de dados, limites baseados em planos de assinatura, novos dashboards corporativos e esteira automatizada de CI/CD.
 
 ## Arquitetura do Sistema
 
@@ -97,6 +97,15 @@ O **Sistema de Gestão de Férias** evoluiu para uma plataforma **SaaS (Software
   - Detalhamento de limites mensais e planos
   - Privacidade e Multi-tenancy
 **Arquivos:** `public/faq.html`
+
+#### 6. Dashboard Corporativo (Novo na v3.0.0)
+- **Tecnologia**: HTML5 + CSS3 + Chart.js
+- **Funcionalidades**:
+  - Visão geral de métricas (Sessões 1, 2 e 3)
+  - Upload e processamento de planilhas Excel/CSV
+  - Integração de string de conexão para bancos externos
+
+**Arquivos:** `public/dashboard.html` (e relacionados)
 
 ## Navegação do Sistema
 

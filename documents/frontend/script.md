@@ -260,6 +260,34 @@ document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
 - **behavior: 'smooth'**: Animação suave
 - Melhora UX ao mostrar automaticamente os resultados
 
+## Interação com Integrações e Dashboards (v3.0.0)
+
+Com a versão 3.0.0, o frontend conta com chamadas adicionais para processamento de planilhas e banco de dados via `/upload` e `/db`.
+
+### Upload de Planilhas
+
+```javascript
+const formData = new FormData();
+formData.append('dataFile', fileInput.files[0]);
+
+const response = await fetch('/api/integrations/upload', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  },
+  body: formData
+});
+```
+**Fluxo:**
+- Cria um objeto `FormData` para suportar arquivos do tipo multipart.
+- O navegador ajusta automaticamente o Header de `Content-Type`.
+- O Servidor processa o arquivo (`.xlsx`/`.csv`) e retorna uma amostra de `dadosExtraidos` para popular interativamente os gráficos do dashboard.
+
+### Integração de Banco de Dados Corporativo
+
+- Envio de requisições assíncronas do tipo POST para `/api/integrations/db` contendo a `connectionString`.
+- Exige a validação do token JWT e garante a exibição de respostas baseadas no papel (apenas perfil "Admin").
+
 ## Tratamento de Erros
 
 ### Bloco Try-Catch

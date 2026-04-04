@@ -1,4 +1,4 @@
-# 📚 Documentação do Projeto - Sistema de Férias SaaS (v1.02.0)
+# 📚 Documentação do Projeto - Sistema de Férias SaaS (v3.0.0)
 
 Esta pasta contém toda a documentação técnica do projeto, organizada por categorias.
 
